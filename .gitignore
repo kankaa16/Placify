@@ -1,0 +1,46 @@
+# Node modules
+node_modules/
+**/node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+out/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Mac / Windows junk
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+
+# Electron
+electron-builder.yml
+release/
+
+# Cache
+.cache/
+.eslintcache
