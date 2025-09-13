@@ -1,0 +1,477 @@
+/* src/ProfilePage.css */
+
+/* Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    /* This is the EXACT background gradient from your picture */
+    background: linear-gradient(135deg, #212529 0%, #171A1D 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #E0E0E0; /* Keep text color for contrast */
+}
+
+
+/* Container and Layout */
+.container {
+    /* max-width removed to allow full page width */
+    /* margin removed to allow full page width */
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+/* Sidebar Styling */
+.sidebar {
+    /* New solid background matching the picture */
+    background: #2C313A;
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    border: 1px solid #3A404C; /* New border color */
+    padding: 32px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 20px;
+    animation: fadeInLeft 0.8s ease-out;
+}
+
+.main-content {
+    display: grid;
+    gap: 24px;
+    animation: fadeInRight 0.8s ease-out;
+}
+
+/* Card Styling */
+.card {
+    background: #2C313A; /* Same new solid background */
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid #3A404C; /* Same new border */
+    padding: 28px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    border-color: #4F5663; /* A slightly lighter border for the hover effect */
+}
+/* Add these styles to the end of src/ProfilePage.css */
+
+.edit-controls {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    justify-content: center;
+}
+
+.edit-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.save-btn {
+    background-color: #34D399;
+    color: #121212;
+}
+.save-btn:hover {
+    background-color: #2cb383;
+}
+
+.cancel-btn {
+    background-color: #4F5663;
+    color: white;
+}
+.cancel-btn:hover {
+    background-color: #6a717e;
+}
+
+/* Styling for input fields in edit mode */
+.edit-input {
+    width: 100%;
+    padding: 8px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px solid #4F5663;
+    border-radius: 6px;
+    color: white;
+    font-size: 16px;
+    margin-top: 4px;
+}
+
+.edit-input-label {
+    font-size: 12px;
+    color: #A0A0A0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+    display: block; /* Important for layout */
+}
+/* Keyframe Animations (unchanged) */
+@keyframes fadeInLeft {
+    from { opacity: 0; transform: translateX(-30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeInRight {
+    from { opacity: 0; transform: translateX(30px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* Avatar Styling */
+.avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    /* Vibrant gradient for the avatar */
+    background: linear-gradient(45deg, #FF6F61, #6B4CFF); /* Orange-red to Purple */
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-weight: 600;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.03); /* Subtle ring around avatar */
+}
+
+.avatar::before {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    /* Animated border gradient */
+    background: linear-gradient(45deg, #FF6F61, #6B4CFF, #4ECDC4, #FFB347); /* Multiple colors for glow */
+    border-radius: 50%;
+    z-index: -1;
+    animation: rotate 3s linear infinite;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Text Elements */
+.student-name {
+    font-size: 28px;
+    font-weight: 700;
+    color: #FFFFFF; /* Pure white for main name */
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.roll-number {
+    font-size: 16px;
+    color: #B0B0B0; /* Slightly lighter grey for secondary info */
+    margin-bottom: 6px;
+}
+
+.department {
+    font-size: 14px;
+    color: #909090; /* Even lighter grey for tertiary info */
+    margin-bottom: 20px;
+}
+
+/* Status Badge */
+.status-badge {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 24px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.status-unplaced {
+    background: rgba(255, 193, 7, 0.15);
+    color: #FFD700;
+    border: 1px solid rgba(255, 193, 7, 0.25);
+}
+
+.status-placed {
+    background: rgba(69, 179, 157, 0.15);
+    color: #4CAF50;
+    border: 1px solid rgba(69, 179, 157, 0.25);
+}
+
+/* Readiness Score Bar */
+.readiness-score {
+    margin-bottom: 24px;
+}
+
+.score-label {
+    font-size: 14px;
+    color: #B0B0B0;
+    margin-bottom: 8px;
+}
+
+.score-bar {
+    width: 100%;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.05); /* Darker background for empty bar */
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4); /* Inner shadow for depth */
+}
+
+.score-fill {
+    height: 100%;
+    /* Greenish-blue gradient from the example */
+    background: linear-gradient(90deg, #34D399, #1C7ED6);
+    border-radius: 6px;
+    transition: width 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+    position: relative;
+}
+
+.score-text {
+    position: absolute;
+    right: 0;
+    top: -25px;
+    font-size: 16px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+/* Contact Info */
+.contact-info {
+    text-align: left;
+    margin-top: 24px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: #E0E0E0;
+}
+
+.contact-icon {
+    width: 20px;
+    text-align: center;
+    color: #8C6DFD; /* A soft purple for icons */
+}
+
+/* Social Links */
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.social-link {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.05); /* Slightly darker social link background */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #E0E0E0;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08); /* More subtle border */
+}
+
+.social-link:hover {
+    background: rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+    border-color: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.section-icon {
+    font-size: 24px;
+    color: #8C6DFD; /* Consistent icon color */
+}
+
+/* Grid Layouts */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Info Items */
+.info-item {
+    margin-bottom: 16px;
+}
+
+.info-label {
+    font-size: 12px;
+    color: #A0A0A0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+}
+
+.info-value {
+    font-size: 16px;
+    color: #FFFFFF;
+    font-weight: 500;
+}
+
+.cgpa-highlight {
+    font-size: 20px;
+    font-weight: 700;
+    color: #4ECDC4; /* Cyan/Teal highlight */
+}
+
+/* Skills Tags */
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-tag {
+    background: rgba(140, 109, 253, 0.15); /* Purple tint for skill tags */
+    color: #C0C0C0;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid rgba(140, 109, 253, 0.25);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.skill-tag:hover {
+    background: rgba(140, 109, 253, 0.25);
+    transform: scale(1.05);
+}
+
+.skill-tag:active {
+    transform: scale(0.95);
+}
+
+/* Test Scores */
+.test-scores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 16px;
+}
+
+.test-score {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.03); /* Very dark background for individual scores */
+    padding: 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.test-score-value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #34D399; /* Green accent for scores */
+}
+
+.test-score-label {
+    font-size: 11px;
+    color: #A0A0A0;
+    text-transform: uppercase;
+}
+
+/* Preferences List */
+.preferences-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.preference-item {
+    background: rgba(28, 126, 214, 0.2); /* Blue tint for preferences */
+    color: #C0C0C0;
+    padding: 8px 14px;
+    border-radius: 16px;
+    font-size: 13px;
+    border: 1px solid rgba(28, 126, 214, 0.3);
+}
+
+/* Certifications */
+.certification-item {
+    background: rgba(255, 255, 255, 0.03); /* Matching test-score background */
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cert-name {
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-bottom: 4px;
+}
+
+.cert-issuer {
+    font-size: 13px;
+    color: #A0A0A0;
+}
+
+/* Responsive Styles (unchanged) */
+@media (max-width: 768px) {
+    .container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .sidebar {
+        position: static;
+    }
+    .grid-2 {
+        grid-template-columns: 1fr;
+    }
+}
+.close-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+}
+
+.close-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    transition: background 0.2s;
+}
+
+.close-btn:hover {
+    background-color: darkred;
+}

@@ -1,0 +1,223 @@
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #0f111a; /* deep dark navy */
+  color: #e0e0e0;
+}
+
+.resume-upload-container {
+  width: 90%; /* take 90% of screen width */
+  max-width: 1200px; /* optional max width */
+  min-height: 80vh; /* take most of screen height */
+  margin: 40px auto;
+  padding: 40px;
+  background: linear-gradient(145deg, #101533, #1a1f3a);
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+}
+
+.resume-upload-container h1 {
+  text-align: center;
+  font-size: 2.2rem;
+  color: #00e0ff; /* bright cyan */
+  margin-bottom: 30px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-row {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+
+.form-group {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #00ffcc; /* minty cyan */
+}
+
+select, input[type="file"] {
+  padding: 12px;
+  border-radius: 10px;
+  border: none;
+  background: #1a1a2e;
+  color: #e0e0e0;
+  font-weight: 500;
+}
+
+button {
+  padding: 14px 22px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #00e0ff, #a100ff); /* blue to purple gradient */
+  color: #0f111a;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: linear-gradient(90deg, #00ffea, #bb33ff);
+}
+
+.resume-result {
+  margin-top: 40px;
+  padding: 25px;
+  background: linear-gradient(145deg, #1a1a2e, #101026);
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+}
+
+.resume-result h2 {
+  text-align: center;
+  color: #00e0ff;
+  margin-bottom: 25px;
+}
+
+.charts {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.chart {
+  flex: 1 1 45%;
+  min-width: 300px;
+  background: linear-gradient(145deg, #101026, #1a1a2e);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+}
+
+.chart h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #00ffcc; /* minty accent */
+}
+
+.suggestions {
+  margin-top: 30px;
+}
+
+.suggestions h3 {
+  color: #00e0ff;
+  margin-bottom: 15px;
+}
+
+.suggestions-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.suggestion-card {
+  flex: 1 1 45%;
+  background: linear-gradient(145deg, #1a1a2e, #101026);
+  color: #e0e0e0;
+  padding: 18px;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  transition: transform 0.3s ease;
+}
+
+.suggestion-card:hover {
+  transform: translateY(-5px);
+}
+
+.ats-gauge-container {
+  position: relative;
+  width: 250px;
+  height: 150px;
+  margin: 30px auto;
+}
+
+.ats-gauge-score {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -30%);
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #00ffcc;
+}
+
+.ats-meter-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.ats-label {
+  color: #00ffcc;
+  font-weight: bold;
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.close-btn:hover {
+  background: #ff7875;
+}
+
+.resume-upload-container {
+  position: relative; /* added */
+  width: 100%;
+  min-height: 80vh;
+  margin: 40px auto;
+  padding: 40px;
+  background: linear-gradient(145deg, #101533, #1a1f3a);
+  border-radius: 15px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.7);
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px; /* adjust for better vertical alignment */
+  right: 15px; /* adjust for better horizontal alignment */
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.3s;
+}
+
+.close-btn:hover {
+  background: #ff7875;
+}
