@@ -124,7 +124,7 @@ const Login = () => {
             <div className="line right-line" />
           </div>
 
-          <footer className="hero-foot">© {new Date().getFullYear()} abcd Ltd. All rights reserved.</footer>
+          <footer className="hero-foot">© {new Date().getFullYear()} Placify Ltd. All rights reserved.</footer>
         </div>
       </div>
     </div>

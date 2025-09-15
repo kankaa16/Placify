@@ -9,11 +9,11 @@ const certificationSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
   role: { type: String, enum: ["admin", "student"], required: true },
 
-  // Common
+  // common fields for both , admin n student!!
   emailID: { type: String, required: true, unique: true },
   password: { type: String, required: true },
 
-  // Student-specific fields
+  // only-studnets
   fName: String,
   lName: String,
   initials: String,

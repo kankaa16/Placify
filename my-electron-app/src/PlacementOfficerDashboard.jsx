@@ -50,14 +50,14 @@ const PlacementOfficerDashboard = () => {
 
           <div className="header-actions">
             {/* Profile Circle Button */}
-            <motion.div
+            {/* <motion.div
               whileHover={{ scale: 1.05 }}
               className="circle-btn"
               onClick={() => navigate('/profile')}
               title="Profile"
             >
               <User style={{ width: 20, height: 20 }} />
-            </motion.div>
+            </motion.div> */}
           
             {/* Settings Button */}
             <motion.div
@@ -91,7 +91,7 @@ const PlacementOfficerDashboard = () => {
 
       <main className="main">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="welcome">
-          <h2>Welcome, {user?.firstName}! 📊</h2>
+          <h2>Welcome Admin! 📊</h2> 
           <p>Manage student placements and track institutional performance</p>
         </motion.div>
 
