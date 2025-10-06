@@ -21,12 +21,12 @@ const StudentDashboard = () => {
   const handleLogout = async () => {
     try {
       await logout();
+      navigate('/login');
     } catch (error) {
       console.error('Logout error:', error);
     }
   };
 
-  // Define cards + routes
   const dashboardCards = [
     {
       id: 'resume',
@@ -99,44 +99,33 @@ const StudentDashboard = () => {
           </div>
 
           <div className="header-actions">
-  {/* Profile Circle Button */}
-  <motion.div
-    whileHover={{ scale: 1.05 }}
-    className="circle-btn"
-    onClick={() => navigate('/profile')}
-    title="Profile"
-  >
-    <User style={{ width: 20, height: 20 }} />
-  </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="circle-btn"
+              onClick={() => navigate('/profile')}
+              title="Profile"
+            >
+              <User style={{ width: 20, height: 20 }} />
+            </motion.div>
 
-  {/* Settings Button */}
-  <motion.div
-    whileHover={{ scale: 1.05 }}
-    className="circle-btn"
-    onClick={() => navigate('/')}
-    title="Settings"
-  >
-    <Settings style={{ width: 20, height: 20 }} />
-  </motion.div>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="circle-btn"
+              onClick={() => navigate('/settings')}
+              title="Settings"
+            >
+              <Settings style={{ width: 20, height: 20 }} />
+            </motion.div>
 
-  {/* Logout Button */}
-  <motion.div
-    whileHover={{ scale: 1.05 }}
-    className="circle-btn logout-btn"
-    onClick={async () => {
-      try {
-        await handleLogout();
-        navigate('/login');
-      } catch (err) {
-        console.error(err);
-      }
-    }}
-    title="Logout"
-  >
-    <LogOut style={{ width: 20, height: 20 }} />
-  </motion.div>
-</div>
-
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              className="circle-btn logout-btn"
+              onClick={handleLogout}
+              title="Logout"
+            >
+              <LogOut style={{ width: 20, height: 20 }} />
+            </motion.div>
+          </div>
         </div>
       </header>
 
@@ -147,7 +136,9 @@ const StudentDashboard = () => {
           transition={{ delay: 0.08 }}
           className="welcome"
         >
-          <h2>Welcome back, {user?.firstName}! 👋</h2>
+          <h2>
+            Welcome back, {user?.fName ? user.fName : user?.emailID?.split('@')[0]}! 👋
+          </h2>
           <p className="text-muted">
             Track your placement readiness and enhance your job prospects
           </p>

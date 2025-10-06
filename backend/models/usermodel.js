@@ -34,6 +34,7 @@ const userSchema = new mongoose.Schema({
     linkedin: String,
     github: String,
     leetcode: String,
+    codeforces: String, 
     other: String
   },
 
@@ -44,6 +45,14 @@ const userSchema = new mongoose.Schema({
     grade12: String,
     jeeMains: String
   },
+  resumeAnalysis: {
+  role: String,
+  score: Number,
+  matchedSkills: [String],
+  missingSkills: [String],
+  parsedData: mongoose.Schema.Types.Mixed
+}
+,
 
   skills: [String],
   assessments: {

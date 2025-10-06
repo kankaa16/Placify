@@ -13,9 +13,12 @@ const PORT = 5000;
 connectDB();
 
 app.use(cors({
-  origin: "http://localhost:5173", 
-  credentials: true               
+  origin: "http://localhost:5173",
+  credentials: true,
+  allowedHeaders: ["Content-Type", "Authorization"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 }));
+
 app.use(express.json());
 
 app.use("/api/auth", authroute);

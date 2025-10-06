@@ -1,4 +1,4 @@
-/* src/ProfilePage.css */
+src/ProfilePage.css
 
 /* Base Styles */
 * {
@@ -357,16 +357,17 @@ body {
 }
 
 .skill-tag {
-    background: rgba(140, 109, 253, 0.15); /* Purple tint for skill tags */
-    color: #C0C0C0;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    border: 1px solid rgba(140, 109, 253, 0.25);
-    transition: all 0.2s ease;
-    cursor: pointer;
+  background: rgba(140, 109, 253, 0.15);
+  color: #C0C0C0;
+  padding: 8px 16px; /* increased from 6px 12px */
+  border-radius: 24px; /* smoother and rounder */
+  font-size: 14px; /* slightly larger */
+  font-weight: 500;
+  border: 1px solid rgba(140, 109, 253, 0.25);
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
+
 
 .skill-tag:hover {
     background: rgba(140, 109, 253, 0.25);
@@ -474,4 +475,326 @@ body {
 
 .close-btn:hover {
     background-color: darkred;
+}
+
+.location-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.location-chip {
+  padding: 6px 12px;
+  border: 1px solid #555;
+  border-radius: 20px;
+  background: #1a1a1a;
+  color: #ddd;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.location-chip.selected {
+  background: #4caf50;
+  color: white;
+  border-color: #4caf50;
+}
+
+.location-chip:hover {
+  background: #333;
+}
+
+.other-option {
+  display: flex;
+  align-items: center;
+}
+
+.other-input {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #666;
+  color: #eee;
+  outline: none;
+  padding: 4px 6px;
+  min-width: 100px;
+}
+.other-input::placeholder {
+  color: #777;
+}
+
+.jobpref-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.pref-chip {
+  padding: 6px 12px;
+  border: 1px solid #555;
+  border-radius: 20px;
+  background: #1a1a1a;
+  color: #ddd;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pref-chip.selected {
+  background: #4caf50;
+  color: white;
+  border-color: #4caf50;
+}
+
+.pref-chip:hover {
+  background: #333;
+}
+
+.display-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.display-tag {
+  background: #2a2a2a;
+  color: #eee;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  border: 1px solid #444;
+  transition: all 0.2s ease;
+}
+
+.display-tag:hover {
+  background: #3b3b3b;
+  border-color: #5cb85c;
+}
+
+.preferences-display > div {
+  margin-bottom: 20px;
+}
+
+.display-tags,
+.skills-container {
+  gap: 10px;
+  row-gap: 12px;
+}
+
+
+/* Academic Performance Block Adjustments */
+.card {
+    background: #2C313A;
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid #3A404C;
+    padding: 20px; /* reduced from 28px for compactness */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.section-title {
+    font-size: 20px; /* slightly smaller */
+    margin-bottom: 16px;
+    gap: 10px;
+}
+
+.grid-2 {
+    gap: 12px; /* tighter spacing between grid items */
+}
+
+.info-item {
+    margin-bottom: 12px; /* less vertical spacing */
+}
+
+.info-value {
+    font-size: 15px; /* slightly smaller text */
+}
+
+.cgpa-highlight {
+    font-size: 18px;
+}
+
+/* Academic Input Fields */
+.edit-input {
+    font-size: 14px;
+    padding: 6px;
+}
+
+.edit-input-label {
+    font-size: 11px;
+    margin-bottom: 2px;
+}
+
+/* Skills and Certifications adjustments for compactness */
+.skill-tag {
+    padding: 6px 12px;
+    font-size: 13px;
+}
+
+.certification-item {
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+/* Dark Theme Refinements */
+body {
+    background: #1B1D22; /* slightly deeper dark */
+    color: #E0E0E0;
+}
+
+.card:hover {
+    border-color: #5A5F6B;
+}
+
+.score-bar {
+    height: 10px; /* smaller bar height */
+}
+
+.score-text {
+    top: -22px;
+    font-size: 14px;
+}
+
+/* Sidebar adjustments */
+.sidebar {
+    padding: 28px; /* slightly reduced padding */
+}
+
+/* Overall compact spacing */
+.container {
+    gap: 20px;
+}
+
+/* Skills Tags - Larger and prominent */
+.skills-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.skill-tag {
+    background: rgba(140, 109, 253, 0.2); /* slightly stronger color */
+    color: #E0E0E0;
+    padding: 10px 18px; /* increased size */
+    border-radius: 26px; /* rounder */
+    font-size: 15px; /* bigger font */
+    font-weight: 600;
+    border: 1px solid rgba(140, 109, 253, 0.3);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.skill-tag:hover {
+    background: rgba(140, 109, 253, 0.35);
+    transform: scale(1.05);
+}
+
+.skill-tag:active {
+    transform: scale(0.95);
+}
+
+/* Job Preferences Card Placement */
+.job-preferences-card {
+    background: #2C313A;
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    border: 1px solid #3A404C;
+    padding: 20px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.jobpref-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.pref-chip {
+    padding: 8px 16px;
+    border-radius: 22px;
+    font-size: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(28, 126, 214, 0.25);
+    color: #E0E0E0;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.pref-chip.selected {
+    background: #4caf50;
+    color: white;
+    border-color: #4caf50;
+}
+
+.pref-chip:hover {
+    background: rgba(28, 126, 214, 0.35);
+}
+
+/* Ensure proper grid placement for Job Preferences */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr; /* single column for mobile friendly layout */
+    gap: 24px;
+}
+
+/* Optional: add section title spacing */
+.job-preferences-card .section-title {
+    margin-bottom: 16px;
+}
+
+.side-by-side-container {
+  display: flex;
+  gap: 20px;
+  border-top: 1px solid #444;
+  border-bottom: 1px solid #444;
+  padding: 15px 0;
+}
+
+.left-panel, .right-panel {
+  flex: 1;
+  padding: 0 15px;
+}
+
+.left-panel {
+  border-right: 1px solid #666; /* partition */
+}
+
+.skills-container, .certifications-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.skill-tag, .cert-card {
+  background-color: #2d2d2d;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.cert-card {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.display-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sidebar {
+    margin-top: 65px; /* moves sidebar down */
+}
+
+.main-content {
+    margin-top: 50px; /* moves main content down */
 }

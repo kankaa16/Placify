@@ -8,3 +8,4 @@ const upload = multer({ storage: multer.memoryStorage() });
 router.post("/upload", upload.single("file"), analyzeResume);
 
 export default router;
+

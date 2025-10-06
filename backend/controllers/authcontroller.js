@@ -43,16 +43,9 @@ export const registerUser = async (data) => {
 };
 
 export const getCurrentUser = async (id) => {
-  const user = await UserModel.findById(id); 
+  const user = await UserModel.findById(id);
   if (!user) throw new Error("User not found");
-
-  return {
-    id: user._id,
-    emailID: user.emailID,
-    role: user.role,
-    fName: user.fName || null,
-    lName: user.lName || null
-  };
+  return user; 
 };
 
 export const updateUserProfile = async (id, data) => {
