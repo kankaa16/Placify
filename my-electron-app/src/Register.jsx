@@ -9,13 +9,14 @@ const Register = () => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    firstName: '',
-    lastName: '',
+    fName: '',
+    lName: '',
     university: '',
     branch: '',
-    email: '',
+    emailID: '',
     password: '',
-    role: 'student'
+    role: 'student',
+    socials: { other: [] }
   });
   const [errors, setErrors] = useState({});
 
@@ -46,27 +47,36 @@ const Register = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.firstName) newErrors.firstName = "First name is required";
-    if (!formData.lastName) newErrors.lastName = "Last name is required";
+    if (!formData.fName) newErrors.fName = "First name is required";
+    if (!formData.lName) newErrors.lName = "Last name is required";
     if (!formData.university) newErrors.university = "University is required";
     if (!formData.branch) newErrors.branch = "Branch is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = "Enter valid email";
+    if (!formData.emailID) newErrors.emailID = "Email is required";
+    else if (!/\S+@\S+\.\S+/.test(formData.emailID)) newErrors.email = "Enter valid email";
     if (!formData.password) newErrors.password = "Password is required";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async e => {
-    e.preventDefault();
-    if (!validateForm()) return;
-    try {
-      await register(formData);
-      navigate('/dashboard');
-    } catch (err) {
-      console.error("Registration failed:", err);
-    }
-  };
+  e.preventDefault();
+  if (!validateForm()) return;
+
+  const payload = { ...formData };
+
+// Ensure socials.other is always an array
+if (!payload.socials?.other || !Array.isArray(payload.socials.other)) {
+  payload.socials.other = [];
+}
+
+
+  try {
+    await register(payload);
+    navigate('/dashboard');
+  } catch (err) {
+    console.error("Registration failed:", err);
+  }
+};
 
   return (
     <div className="hero-page">
@@ -101,26 +111,26 @@ const Register = () => {
                     <div className="field icon-input">
                       <User size={18} />
                       <input
-                        name="firstName"
+                        name="fName"
                         placeholder="First Name"
-                        value={formData.firstName}
+                        value={formData.fName}
                         onChange={handleChange}
-                        className={errors.firstName ? 'is-error' : ''}
+                        className={errors.fName ? 'is-error' : ''}
                       />
                     </div>
                     <div className="field icon-input">
                       <User size={18} />
                       <input
-                        name="lastName"
+                        name="lName"
                         placeholder="Last Name"
-                        value={formData.lastName}
+                        value={formData.lName}
                         onChange={handleChange}
-                        className={errors.lastName ? 'is-error' : ''}
+                        className={errors.lName ? 'is-error' : ''}
                       />
                     </div>
                   </div>
-                  {errors.firstName && <span className="field-error">{errors.firstName}</span>}
-                  {errors.lastName && <span className="field-error">{errors.lastName}</span>}
+                  {errors.fName && <span className="field-error">{errors.fName}</span>}
+                  {errors.lName && <span className="field-error">{errors.lName}</span>}
 
                   <div className="field icon-input">
                     <Building size={18} />
@@ -151,15 +161,15 @@ const Register = () => {
                   <div className="field icon-input">
                     <Mail size={18} />
                     <input
-                      name="email"
+                      name="emailID"
                       type="email"
                       placeholder="Email"
-                      value={formData.email}
+                      value={formData.emailID}
                       onChange={handleChange}
-                      className={errors.email ? 'is-error' : ''}
+                      className={errors.emailID ? 'is-error' : ''}
                     />
                   </div>
-                  {errors.email && <span className="field-error">{errors.email}</span>}
+                  {errors.emailID && <span className="field-error">{errors.emailID}</span>}
 
                   <div className="field icon-input">
                     <Lock size={18} />

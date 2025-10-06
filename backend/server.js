@@ -6,7 +6,7 @@ import cors from "cors";
 import connectDB from "./config/db.js"; 
 import authroute from "./routes/authroute.js";
 import resumeRoutes from './routes/resumeroute.js'
-
+import scoreroute from './routes/scoreroute.js';
 const app = express();
 const PORT = 5000;
 
@@ -23,7 +23,7 @@ app.use(express.json());
 
 app.use("/api/auth", authroute);
 app.use("/api/resume", resumeRoutes);
-
+app.use("/api/score", scoreroute);
 
 
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -11,7 +11,14 @@ import PlacementOfficerDashboard from './PlacementOfficerDashboard.jsx';
 import ProfilePage from './ProfilePage.jsx';
 import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import ResumeUpload from './ResumeUpload.jsx';
-import ResumeAnalyzer from '../components/ResumeAnalyzer.jsx';
+import Scorecards from './Scorecards.jsx';
+
+
+const ScorecardsWrapper = () => {
+  const { user } = useAuth();
+  return <div className="scorecards-wrapper"><Scorecards userId={user?._id} /></div>;
+};
+
 
 // Protected route wrapper
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -77,6 +84,17 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
+
+<Route
+  path="/coding-scores"
+  element={
+    <ProtectedRoute allowedRoles={['student']}>
+      <ScorecardsWrapper />
+    </ProtectedRoute>
+  }
+/>
+
+
 
           <Route
             path="/admin-dashboard"

@@ -356,3 +356,11 @@
 .logout-btn:hover {
   background: #d9363e;
 }
+
+.scorecards-wrapper {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  min-height: 80vh;
+  background: #0f0f0f;
+}

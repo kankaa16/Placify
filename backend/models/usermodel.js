@@ -19,6 +19,8 @@ const userSchema = new mongoose.Schema({
   initials: String,
   rollNumber: String,
   dept: String,
+  university: String,  
+  branch: String,  
   batch: Number,
   status: String,
   readinessScore: Number,
@@ -30,14 +32,40 @@ const userSchema = new mongoose.Schema({
   },
 
   socials: {
-    portfolio: String,
-    linkedin: String,
-    github: String,
-    leetcode: String,
-    codeforces: String, 
-    other: String
-  },
+  portfolio: String,
+  linkedin: String,
+  github: String,
+  leetcode: String,
+  codeforces: String, 
+  codechef: String,
+  hackerrank: String,
+  other: [
+    {
+      platformName: String,
+      handle: String,
+      solvedProblems: Number,
+      rating: Number,
+      contests: Number
+    }
+  ]
+},
+platformStats: [
+  {
+    platform: String, 
+    solvedProblems: Number,
+    contests: Number,
+    rating: Number
+  }
+]
+,
 
+readinessScoreHistory: [
+  {
+    score: Number,
+    date: { type: Date, default: Date.now }
+  }
+]
+,
   academics: {
     cgpa: Number,
     backlogs: Number,
@@ -55,12 +83,13 @@ const userSchema = new mongoose.Schema({
 ,
 
   skills: [String],
-  assessments: {
-    technical: Number,
-    aptitude: Number,
-    communication: Number,
-    coding: Number
-  },
+  assessments: [
+  {
+    name: String,
+    score: Number
+  }
+],
+
 
   certifications: [certificationSchema],
 
