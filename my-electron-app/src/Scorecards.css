@@ -1,0 +1,47 @@
+.handle-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.handle-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.handle-input input {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #0f1720;
+  color: #fff;
+}
+
+button {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  background: #8b5cf6;
+  color: #fff;
+  cursor: pointer;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.platform-card {
+  background: #0f1720;
+  border-radius: 12px;
+  padding: 12px;
+}
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.card-body p {
+  margin: 4px 0;
+}

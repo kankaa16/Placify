@@ -85,14 +85,7 @@ function AppContent() {
             }
           />
 
-<Route
-  path="/coding-scores"
-  element={
-    <ProtectedRoute allowedRoles={['student']}>
-      <ScorecardsWrapper />
-    </ProtectedRoute>
-  }
-/>
+<Route path="/coding-scores" element={<Scorecards />} />
 
 
 

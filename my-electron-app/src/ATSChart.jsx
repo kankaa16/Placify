@@ -1,37 +1,26 @@
+// ATSScore.jsx
 import React from "react";
-import { Doughnut } from "react-chartjs-2";
-import "chart.js/auto";
-import "./resume.css";
+import "./ATSScore.css";
 
-const ATSMeter = ({ score }) => {
-  const data = {
-    datasets: [
-      {
-        data: [score, 100 - score],
-        backgroundColor: ["#ff9800", "#2b2b2b"],
-        borderWidth: 0,
-        cutout: "70%",
-        rotation: -90,
-        circumference: 180,
-      },
-    ],
-  };
-
-  const options = {
-    plugins: {
-      tooltip: { enabled: false },
-      legend: { display: false },
-    },
-    responsive: true,
-    maintainAspectRatio: false,
-  };
-
+export default function ATSScore({ percent }) {
   return (
-    <div className="ats-gauge-container">
-      <Doughnut data={data} options={options} />
-      <div className="ats-gauge-score">{score}/100</div>
+    <div className="ats-chart-wrap">
+      <svg viewBox="0 0 36 36" className="circular-chart">
+        <path
+          className="circle-bg"
+          d="M18 2.0845
+             a 15.9155 15.9155 0 0 1 0 31.831
+             a 15.9155 15.9155 0 0 1 0 -31.831"
+        />
+        <path
+          className="circle"
+          strokeDasharray={`${percent}, 100`}
+          d="M18 2.0845
+             a 15.9155 15.9155 0 0 1 0 31.831
+             a 15.9155 15.9155 0 0 1 0 -31.831"
+        />
+        <text x="18" y="20.35" className="percentage">{percent}%</text>
+      </svg>
     </div>
   );
-};
-
-export default ATSMeter;
+}
