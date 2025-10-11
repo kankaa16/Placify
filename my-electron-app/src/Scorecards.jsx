@@ -1,148 +1,170 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { SiLeetcode, SiCodeforces, SiCodechef, SiGithub } from "react-icons/si";
-import { FaRobot } from "react-icons/fa";
-import "./Scorecards.css";
+import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
+import './Scorecards.css';
 
-const platformMeta = {
-  leetcode: { name: "LeetCode", Icon: SiLeetcode },
-  codeforces: { name: "Codeforces", Icon: SiCodeforces },
-  codechef: { name: "CodeChef", Icon: SiCodechef },
-  github: { name: "GitHub", Icon: SiGithub },
-  huggingface: { name: "HuggingFace", Icon: FaRobot },
+const platformColors = {
+  leetcode: "#FFA116",
+  codeforces: "#1F8ACB",
+  codechef: "#5E9EFF",
+  hackerrank: "#2EC4B6",
+  atcoder: "#FF6B6B",
+  github: "#6E5494",
+  huggingface: "#F9A826"
 };
 
-const renderLeetCodeStats = (data) => {
-  if (!data) return null;
-
-  const {
-    totalSolved,
-    easySolved,
-    mediumSolved,
-    hardSolved,
-    acceptanceRate,
-    ranking,
-    contributionPoints,
-    reputation,
-    submissionCalendar,
-  } = data;
-
-  const totalSubmissions = submissionCalendar
-    ? Object.values(submissionCalendar).reduce((acc, v) => acc + v, 0)
-    : 0;
-
-  return (
-    <>
-      <p><strong>Total Solved:</strong> {totalSolved}</p>
-      <p><strong>Easy Solved:</strong> {easySolved}</p>
-      <p><strong>Medium Solved:</strong> {mediumSolved}</p>
-      <p><strong>Hard Solved:</strong> {hardSolved}</p>
-      <p><strong>Acceptance Rate:</strong> {acceptanceRate}%</p>
-      <p><strong>Ranking:</strong> {ranking}</p>
-      <p><strong>Contribution Points:</strong> {contributionPoints}</p>
-      <p><strong>Reputation:</strong> {reputation}</p>
-      <p><strong>Total Submissions:</strong> {totalSubmissions}</p>
-    </>
-  );
-};
-
-export default function Scorecards() {
+const Scorecards = () => {
   const [handles, setHandles] = useState({
-    leetcode: "",
-    codeforces: "",
-    codechef: "",
-    github: "",
-    huggingface: "",
+    leetcode: "", codeforces: "", codechef: "", hackerrank: "", atcoder: "", github: "", huggingface: ""
   });
-
-  const [stats, setStats] = useState({});
+  const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e) => {
-    setHandles({ ...handles, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const fetchStats = async () => {
     setLoading(true);
-    const fetchedStats = {};
+    const baseURL = "http://localhost:5000/api";
+    const fetchers = {
+      leetcode: handles.leetcode && `${baseURL}/leetcode/${handles.leetcode}`,
+      codeforces: handles.codeforces && `${baseURL}/codeforces/${handles.codeforces}`,
+      codechef: handles.codechef && `${baseURL}/codechef/${handles.codechef}`,
+      hackerrank: handles.hackerrank && `${baseURL}/hackerrank/${handles.hackerrank}`,
+      atcoder: handles.atcoder && `${baseURL}/atcoder/${handles.atcoder}`,
+      github: handles.github && `${baseURL}/github/${handles.github}`,
+      huggingface: handles.huggingface && `${baseURL}/huggingface/${handles.huggingface}`
+    };
 
-    for (const platform of Object.keys(handles)) {
-      if (!handles[platform]) continue;
-      try {
-        const res = await axios.get(
-          `http://localhost:5000/api/${platform}/${handles[platform]}`
-        );
-        fetchedStats[platform] = res.data;
-      } catch (err) {
-        console.log(platform, err.message);
-        fetchedStats[platform] = { error: "fetch failed" };
-      }
-    }
-
-    setStats(fetchedStats);
+    const results = {};
+    await Promise.all(
+      Object.entries(fetchers)
+        .filter(([_, url]) => url)
+        .map(async ([key, url]) => {
+          try {
+            const { data } = await axios.get(url);
+            results[key] = data;
+          } catch {
+            results[key] = { error: `${key} fetch failed` };
+          }
+        })
+    );
+    setStats(results);
     setLoading(false);
   };
 
-  const renderStatValue = (platform, key, value) => {
-    if (value === null || value === undefined) return "N/A";
+  const renderCPCard = (platform, data) => {
+    if (!data) return null;
 
-    // Special handling for LeetCode
-    if (platform === "leetcode") return renderLeetCodeStats(stats.leetcode);
+    const pieData = platform === "leetcode" ? [
+      { name: "Easy", value: data.easySolved || 0 },
+      { name: "Medium", value: data.mediumSolved || 0 },
+      { name: "Hard", value: data.hardSolved || 0 }
+    ] : platform === "codechef" ? [
+      { name: "Stars", value: data.stars || 0 },
+      { name: "Rest", value: 5 - (data.stars || 0) }
+    ] : [];
 
-    if (typeof value === "object") return JSON.stringify(value);
-    return value.toString();
+    return (
+      <div className="card" key={platform}>
+        <div className="card-header">
+          <div className="card-icon" style={{ backgroundColor: platformColors[platform] }}>
+            {platform.charAt(0).toUpperCase()}
+          </div>
+          <h2>{platform.charAt(0).toUpperCase() + platform.slice(1)}</h2>
+        </div>
+
+        <div className="card-body">
+          {Object.entries(data).map(([k,v]) => (
+            <p key={k}><span>{k.replace(/([A-Z])/g," $1")}:</span> <span>{v ?? 0}</span></p>
+          ))}
+        </div>
+
+        {pieData.length > 0 && (
+          <div className="chart-wrapper" style={{ height: 150 }}>
+            <PieChart width={150} height={150}>
+              <Pie data={pieData} dataKey="value" nameKey="name" innerRadius={40} outerRadius={60} paddingAngle={4}>
+                {pieData.map((entry, idx) => <Cell key={idx} fill={platformColors[platform]} />)}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderDevCard = (platform, data) => {
+    if (!data) return null;
+
+    const barData = platform === "github" ? [
+      { type: "Repos", value: data.repos || 0 },
+      { type: "Followers", value: data.followers || 0 },
+      { type: "Following", value: data.following || 0 }
+    ] : [];
+
+    return (
+      <div className="card" key={platform}>
+        <div className="card-header">
+          <div className="card-icon" style={{ backgroundColor: platformColors[platform] }}>
+            {platform.charAt(0).toUpperCase()}
+          </div>
+          <h2>{platform.charAt(0).toUpperCase() + platform.slice(1)}</h2>
+        </div>
+
+        <div className="card-body">
+          {Object.entries(data).map(([k,v]) => (
+            <p key={k}><span>{k.replace(/([A-Z])/g," $1")}:</span> <span>{v ?? 0}</span></p>
+          ))}
+        </div>
+
+        {barData.length > 0 && (
+          <div className="chart-wrapper" style={{ height: 150 }}>
+            <BarChart width={250} height={150} data={barData} margin={{ top: 5, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#444"/>
+              <XAxis dataKey="type" stroke="#fff"/>
+              <YAxis stroke="#fff"/>
+              <Tooltip/>
+              <Bar dataKey="value" fill={platformColors[platform]} barSize={20}/>
+            </BarChart>
+          </div>
+        )}
+      </div>
+    );
   };
 
   return (
-    <div className="score-root">
-      <form className="handle-form" onSubmit={handleSubmit}>
-        {Object.keys(handles).map((platform) => (
-          <div key={platform} className="handle-input">
-            <label>{platformMeta[platform]?.name || platform}</label>
-            <input
-              type="text"
-              name={platform}
-              value={handles[platform]}
-              onChange={handleChange}
-              placeholder={`Enter your ${platform} handle`}
-            />
-          </div>
+    <div className="scorecards-container">
+      <h1>Enter Your Platform Usernames</h1>
+
+      <div className="input-section">
+        {Object.keys(handles).map(platform => (
+          <input
+            key={platform}
+            type="text"
+            placeholder={`${platform} username`}
+            value={handles[platform]}
+            onChange={e => setHandles({ ...handles, [platform]: e.target.value })}
+          />
         ))}
-        <button type="submit">Fetch Stats</button>
-      </form>
-
-      {loading && <p>Loading stats...</p>}
-
-      <div className="cards-grid">
-        {Object.entries(stats).map(([platform, data]) => {
-          const Icon = platformMeta[platform]?.Icon || FaRobot;
-          return (
-            <div key={platform} className="platform-card">
-              <div className="card-head">
-                <Icon size={28} />
-                <div>
-                  <h3>{platformMeta[platform]?.name || platform}</h3>
-                  <p>{handles[platform]}</p>
-                </div>
-              </div>
-              <div className="card-body">
-                {data.error ? (
-                  <p>{data.error}</p>
-                ) : platform === "leetcode" ? (
-                  renderLeetCodeStats(data)
-                ) : (
-                  Object.entries(data).map(([k, v]) => (
-                    <p key={k}>
-                      <strong>{k}:</strong> {renderStatValue(platform, k, v)}
-                    </p>
-                  ))
-                )}
-              </div>
-            </div>
-          );
-        })}
       </div>
+
+      <button className="fetch-button" onClick={fetchStats}>
+        {loading ? "Fetching..." : "Fetch Stats"}
+      </button>
+
+      {stats && (
+        <>
+          <h2>Competitive Programming Stats</h2>
+          <div className="card-grid">
+            {["leetcode","codeforces","codechef","hackerrank","atcoder"].map(p => renderCPCard(p, stats[p]))}
+          </div>
+
+          <h2>Development Stats</h2>
+          <div className="card-grid">
+            {["github","huggingface"].map(p => renderDevCard(p, stats[p]))}
+          </div>
+        </>
+      )}
     </div>
   );
-}
+};
+
+export default Scorecards;

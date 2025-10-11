@@ -6,6 +6,23 @@ const certificationSchema = new mongoose.Schema({
   completed: Number
 }, { _id: false });
 
+const platformStatsSchema = new mongoose.Schema({
+  platform: { type: String }, // "leetcode", "codeforces", "github", etc.
+  username: String,
+  solvedProblems: Number,
+  contests: Number,
+  rating: Number,
+  maxRating: Number,
+  rank: String,
+  stars: Number,
+  repos: Number,
+  followers: Number,
+  commitsLastYear: Number,
+  models: Number,
+  downloads: Number
+}, { _id: false });
+
+
 const userSchema = new mongoose.Schema({
   role: { type: String, enum: ["admin", "student"], required: true },
 
@@ -49,15 +66,14 @@ const userSchema = new mongoose.Schema({
     }
   ]
 },
-platformStats: [
-  {
-    platform: String, 
-    solvedProblems: Number,
-    contests: Number,
-    rating: Number
-  }
-]
-,
+platformStats: [platformStatsSchema],
+
+  readinessScoreHistory: [
+    {
+      score: Number,
+      date: { type: Date, default: Date.now }
+    }
+  ],
 
 readinessScoreHistory: [
   {

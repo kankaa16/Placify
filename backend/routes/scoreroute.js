@@ -1,12 +1,11 @@
 import express from "express";
-import { updateUserReadiness, getUserProfile } from "../controllers/scorecontroller.js";
+import { updateUserReadiness, getUserProfile, saveUserHandles } from "../controllers/scorecontroller.js";
 import verifyToken from "../middlewares/verifyToken.js";
+
 const router = express.Router();
 
-// Update platform handles and fetch new scores
+router.post("/save-handles/:userId", verifyToken, saveUserHandles);
+router.get("/:userId", verifyToken, getUserProfile);
 router.put("/readiness/:userId", updateUserReadiness);
-
-// Get user profile and stats
-router.get("/:userId",verifyToken, getUserProfile);
 
 export default router;
