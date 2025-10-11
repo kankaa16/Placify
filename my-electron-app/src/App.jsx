@@ -12,12 +12,19 @@ import ProfilePage from './ProfilePage.jsx';
 import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import ResumeUpload from './ResumeUpload.jsx';
 import Scorecards from './Scorecards.jsx';
-
+import ProfileStats from '../components/ProfileStats.jsx';
 
 const ScorecardsWrapper = () => {
   const { user } = useAuth();
   return <div className="scorecards-wrapper"><Scorecards userId={user?._id} /></div>;
 };
+
+const ProfileStatsWrapper = () => {
+  const { user } = useAuth();
+  if (!user) return <LoadingSpinner />; // wait until user loads
+  return <ProfileStats userId={user._id} />;
+};
+
 
 
 // Protected route wrapper
@@ -85,7 +92,15 @@ function AppContent() {
             }
           />
 
-<Route path="/coding-scores" element={<Scorecards />} />
+<Route
+  path="/coding-scores"
+  element={
+    <ProtectedRoute allowedRoles={['student']}>
+      <ProfileStatsWrapper />
+    </ProtectedRoute>
+  }
+/>
+
 
 
 

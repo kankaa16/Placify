@@ -2,16 +2,18 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import *as cheerio from 'cheerio';
-import axios from 'axios';
+import * as cheerio from "cheerio";
+import axios from "axios";
 import cors from "cors";
-import connectDB from "./config/db.js"; 
+import connectDB from "./config/db.js";
 import authroute from "./routes/authroute.js";
-import resumeRoutes from './routes/resumeroute.js'
-import scoreroute from './routes/scoreroute.js';
+import resumeRoutes from "./routes/resumeroute.js";
+import scoreroute from "./routes/scoreroute.js";
+import User from "./models/usermodel.js";
+
 const app = express();
 
-
+// connect database
 connectDB();
 
 app.use(cors({
@@ -20,132 +22,186 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
 }));
-
 app.use(express.json());
 
+// existing routes
 app.use("/api/auth", authroute);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/score", scoreroute);
 
+
+// Fetch user profile
+app.get("/api/profile/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).select("-password");
+    if (!user) return res.status(404).json({ message: "User not found" });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update user profile (general info or socials)
+app.put("/api/profile/:userId", async (req, res) => {
+  try {
+    const updates = req.body;
+    const user = await User.findByIdAndUpdate(req.params.userId, updates, { new: true }).select("-password");
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Update or add a single platform's stats into user document
+app.put("/api/profile/:userId/platform", async (req, res) => {
+  try {
+    const { platform, stats } = req.body;
+    const user = await User.findById(req.params.userId);
+    if (!user) return res.status(404).json({ message: "User not found" });
+
+    const index = user.platformStats.findIndex(p => p.platform === platform);
+    if (index >= 0) {
+      user.platformStats[index] = { platform, ...stats };
+    } else {
+      user.platformStats.push({ platform, ...stats });
+    }
+
+    await user.save();
+    res.json(user.platformStats);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// =====================================================================
+// PLATFORM-SPECIFIC SCRAPING / API FETCHES
+// =====================================================================
+
 // LeetCode
 app.get("/api/leetcode/:username", async (req,res)=>{
-    const { username } = req.params;
-    try {
-        const { data } = await axios.get(`https://leetcode-stats-api.herokuapp.com/${username}`);
-        res.json({
-            totalSolved: data?.totalSolved || 0,
-            acRate: data?.acRate || 0,
-            easySolved: data?.easySolved || 0,
-            mediumSolved: data?.mediumSolved || 0,
-            hardSolved: data?.hardSolved || 0
-        });
-    } catch(err){
-        console.error("LeetCode fetch failed:", err.message);
-        res.json({ totalSolved:0, acRate:0, easySolved:0, mediumSolved:0, hardSolved:0 });
-    }
+  const { username } = req.params;
+  try {
+    const { data } = await axios.get(`https://leetcode-stats-api.herokuapp.com/${username}`);
+    const normalized = {
+      easySolved: data?.easySolved || 0,
+      mediumSolved: data?.mediumSolved || 0,
+      hardSolved: data?.hardSolved || 0,
+      totalSolved: data?.totalSolved || 0,
+      acRate: data?.acRate || 0,
+      contributionsCalendar: data?.contributionsCalendar || {}, // if API provides
+      submissions: (data?.recentSubmissionTimes || []).map(ts => ({ timestamp: ts }))
+    };
+    res.json(normalized);
+  } catch(err){
+    console.error("LeetCode fetch failed:", err.message);
+    res.json({
+      easySolved:0, mediumSolved:0, hardSolved:0, totalSolved:0,
+      contributionsCalendar: {}, submissions: []
+    });
+  }
 });
+
 
 // Codeforces
 app.get("/api/codeforces/:username", async (req,res)=>{
-    const { username } = req.params;
-    try{
-        const { data } = await axios.get(`https://codeforces.com/api/user.info?handles=${username}`);
-        const user = data?.result?.[0] || {};
-        res.json({
-            handle: user.handle || username,
-            rating: user.rating || 0,
-            maxRating: user.maxRating || 0,
-            rank: user.rank || "N/A",
-            maxRank: user.maxRank || "N/A",
-            contribution: user.contribution || 0
-        });
-    } catch(err){
-        console.error("Codeforces fetch failed:", err.message);
-        res.json({ rating:0, maxRating:0, rank:"N/A", maxRank:"N/A", contribution:0 });
-    }
+  const { username } = req.params;
+  try{
+    const { data } = await axios.get(`https://codeforces.com/api/user.info?handles=${username}`);
+    const user = data?.result?.[0] || {};
+    res.json({
+      handle: user.handle || username,
+      rating: user.rating || 0,
+      maxRating: user.maxRating || 0,
+      rank: user.rank || "N/A",
+      maxRank: user.maxRank || "N/A",
+      contribution: user.contribution || 0
+    });
+  } catch(err){
+    console.error("Codeforces fetch failed:", err.message);
+    res.json({ rating:0, maxRating:0, rank:"N/A", maxRank:"N/A", contribution:0 });
+  }
 });
 
-// CodeChef (scraping)
+// CodeChef
 app.get("/api/codechef/:username", async (req,res)=>{
-    const { username } = req.params;
-    try{
-        const { data } = await axios.get(`https://www.codechef.com/users/${username}`);
-        const $ = cheerio.load(data);
-        const rating = $(".rating-number").first().text().trim() || "0";
-        const maxRating = $(".rating-number").last().text().trim() || "0";
-        const stars = $(".rating-star").length || 0;
-        res.json({ rating, maxRating, stars });
-    } catch(err){
-        console.error("CodeChef fetch failed:", err.message);
-        res.json({ rating:0, maxRating:0, stars:0 });
-    }
+  const { username } = req.params;
+  try{
+    const { data } = await axios.get(`https://www.codechef.com/users/${username}`);
+    const $ = cheerio.load(data);
+    const rating = $(".rating-number").first().text().trim() || "0";
+    const maxRating = $(".rating-number").last().text().trim() || "0";
+    const stars = $(".rating-star").length || 0;
+    res.json({ rating, maxRating, stars });
+  } catch(err){
+    console.error("CodeChef fetch failed:", err.message);
+    res.json({ rating:0, maxRating:0, stars:0 });
+  }
 });
 
 // HackerRank
 app.get("/api/hackerrank/:username", async (req,res)=>{
-    const { username } = req.params;
-    try{
-        const { data } = await axios.get(`https://www.hackerrank.com/rest/hackers/${username}/profile`);
-        res.json({
-            reputation: data?.model?.reputation || 0,
-            badges: data?.model?.badges_count || 0,
-            leaderboard_rank: data?.model?.hacker_rank || 0
-        });
-    } catch(err){
-        console.error("HackerRank fetch failed:", err.message);
-        res.json({ reputation:0, badges:0, leaderboard_rank:0 });
-    }
+  const { username } = req.params;
+  try{
+    const { data } = await axios.get(`https://www.hackerrank.com/rest/hackers/${username}/profile`);
+    res.json({
+      reputation: data?.model?.reputation || 0,
+      badges: data?.model?.badges_count || 0,
+      leaderboard_rank: data?.model?.hacker_rank || 0
+    });
+  } catch(err){
+    console.error("HackerRank fetch failed:", err.message);
+    res.json({ reputation:0, badges:0, leaderboard_rank:0 });
+  }
 });
 
 // AtCoder
 app.get("/api/atcoder/:username", async (req,res)=>{
-    const { username } = req.params;
-    try{
-        const { data } = await axios.get(`https://atcoder.jp/users/${username}`);
-        const $ = cheerio.load(data);
-        const rating = $("table.dl-table tr")
-                        .filter((i,el)=> $(el).find("th").text().includes("Rating"))
-                        .find("td").text().trim() || "0";
-        res.json({ rating });
-    } catch(err){
-        console.error("AtCoder fetch failed:", err.message);
-        res.json({ rating:0 });
-    }
+  const { username } = req.params;
+  try{
+    const { data } = await axios.get(`https://atcoder.jp/users/${username}`);
+    const $ = cheerio.load(data);
+    const rating = $("table.dl-table tr")
+                    .filter((i,el)=> $(el).find("th").text().includes("Rating"))
+                    .find("td").text().trim() || "0";
+    res.json({ rating });
+  } catch(err){
+    console.error("AtCoder fetch failed:", err.message);
+    res.json({ rating:0 });
+  }
 });
 
-// Github
+// GitHub
 app.get("/api/github/:username", async (req,res)=>{
-    const { username } = req.params;
-    try{
-        const { data } = await axios.get(`https://api.github.com/users/${username}`);
-        res.json({
-            repos: data?.public_repos || 0,
-            followers: data?.followers || 0,
-            following: data?.following || 0
-        });
-    } catch(err){
-        console.error("GitHub fetch failed:", err.message);
-        res.json({ repos:0, followers:0, following:0 });
-    }
+  const { username } = req.params;
+  try{
+    const { data } = await axios.get(`https://api.github.com/users/${username}`);
+    res.json({
+      repos: data?.public_repos || 0,
+      followers: data?.followers || 0,
+      following: data?.following || 0,
+      
+    });
+  } catch(err){
+    console.error("GitHub fetch failed:", err.message);
+    res.json({ repos:0, followers:0, following:0 });
+  }
 });
 
-// Huggingface
+// HuggingFace
 app.get("/api/huggingface/:username", async (req,res)=>{
-    const { username } = req.params;
-    try{
-        const { data } = await axios.get(`https://huggingface.co/api/users/${username}`);
-        res.json({
-            name: data?.name || "-",
-            followers: data?.followers || 0,
-            repos: data?.repositories?.length || 0
-        });
-    } catch(err){
-        console.error("HuggingFace fetch failed:", err.message);
-        res.json({ name:"-", followers:0, repos:0 });
-    }
+  const { username } = req.params;
+  try{
+    const { data } = await axios.get(`https://huggingface.co/api/users/${username}`);
+    res.json({
+      name: data?.name || "-",
+      followers: data?.followers || 0,
+      repos: data?.repositories?.length || 0
+    });
+  } catch(err){
+    console.error("HuggingFace fetch failed:", err.message);
+    res.json({ name:"-", followers:0, repos:0 });
+  }
 });
-
-
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

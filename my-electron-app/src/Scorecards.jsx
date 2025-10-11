@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { PieChart, Pie, Cell, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts";
+import { normalizeLeet, normalizeCodeChef, normalizeGitHub, synthesizeSubmissions } from '../src/utilis/normalizePlatformData.js';
 import './Scorecards.css';
 
 const platformColors = {
@@ -40,12 +41,33 @@ const Scorecards = () => {
         .map(async ([key, url]) => {
           try {
             const { data } = await axios.get(url);
-            results[key] = data;
+            switch (key) {
+              case "leetcode":
+                results[key] = normalizeLeet(data);
+                if (!Object.keys(results[key].contributionsCalendar).length && results[key].totalSolved > 0) {
+                  results[key].contributionsCalendar = synthesizeSubmissions(results[key].totalSolved);
+                }
+                break;
+              case "codechef":
+                results[key] = normalizeCodeChef(data);
+                break;
+              case "github":
+                results[key] = normalizeGitHub(data);
+                break;
+              default:
+                const totalSolved = data?.totalSolved || 0;
+                results[key] = {
+                  totalSolved,
+                  contributionsCalendar: data?.contributionsCalendar || synthesizeSubmissions(totalSolved),
+                  submissions: data?.submissions || []
+                };
+            }
           } catch {
-            results[key] = { error: `${key} fetch failed` };
+            results[key] = { error: `${key} fetch failed`, totalSolved: 0, contributionsCalendar: {}, submissions: [] };
           }
         })
     );
+
     setStats(results);
     setLoading(false);
   };
