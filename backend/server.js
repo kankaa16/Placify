@@ -73,11 +73,7 @@ app.put("/api/profile/:userId/platform", async (req, res) => {
   }
 });
 
-// =====================================================================
-// PLATFORM-SPECIFIC SCRAPING / API FETCHES
-// =====================================================================
 
-// LeetCode
 app.get("/api/leetcode/:username", async (req,res)=>{
   const { username } = req.params;
   try {
