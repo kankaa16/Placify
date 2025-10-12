@@ -44,9 +44,7 @@ const Scorecards = () => {
             switch (key) {
               case "leetcode":
                 results[key] = normalizeLeet(data);
-                if (!Object.keys(results[key].contributionsCalendar).length && results[key].totalSolved > 0) {
-                  results[key].contributionsCalendar = synthesizeSubmissions(results[key].totalSolved);
-                }
+                
                 break;
               case "codechef":
                 results[key] = normalizeCodeChef(data);
