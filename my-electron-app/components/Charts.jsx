@@ -1,7 +1,7 @@
-// src/components/Charts.jsx
 import React from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
 import "./Charts.css";
+
 const COLORS = ["#00C49F", "#FFBB28", "#FF4F4F"];
 
 function readCounts(p) {
@@ -27,35 +27,58 @@ function readCounts(p) {
 
 export default function Charts({ stats }) {
   const platforms = Object.values(stats || {});
-  const total = { easy: 0, medium: 0, hard: 0 };
+  const totalCounts = { easy: 0, medium: 0, hard: 0 };
   for (const p of platforms) {
     const c = readCounts(p);
-    total.easy += c.easy;
-    total.medium += c.medium;
-    total.hard += c.hard;
+    totalCounts.easy += c.easy;
+    totalCounts.medium += c.medium;
+    totalCounts.hard += c.hard;
   }
 
   const data = [
-    { name: "Easy", value: total.easy },
-    { name: "Medium", value: total.medium },
-    { name: "Hard", value: total.hard }
+    { name: "Easy", value: totalCounts.easy, color: COLORS[0] },
+    { name: "Medium", value: totalCounts.medium, color: COLORS[1] },
+    { name: "Hard", value: totalCounts.hard, color: COLORS[2] }
   ];
 
+  const totalSolved = totalCounts.easy + totalCounts.medium + totalCounts.hard;
   const allZero = data.every(d => d.value === 0);
 
   return (
     <div className="charts-card">
-      <h4>Problems by Difficulty</h4>
+      <h4>Problems by Difficulty on LeetCode</h4>
       {allZero ? (
-        <div className="charts-empty">no difficulty data available</div>
+        <div className="charts-empty">No difficulty data available</div>
       ) : (
-        <ResponsiveContainer width="100%" height={200}>
-          <PieChart>
-            <Pie data={data} dataKey="value" innerRadius={50} outerRadius={80} paddingAngle={4} label>
-              {data.map((entry, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer>
+        <div className="charts-wrapper">
+          <ResponsiveContainer width="100%" height={200}>
+            <PieChart>
+              <Pie
+                data={data}
+                dataKey="value"
+                innerRadius={50}
+                outerRadius={80}
+                paddingAngle={4}
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+              >
+                {data.map((entry, i) => (
+                  <Cell key={i} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value) => [`${value}`, "Problems"]} />
+            </PieChart>
+          </ResponsiveContainer>
+
+          <div className="charts-summary">
+            <p><strong>Total:</strong> {totalSolved}</p>
+            {data.map((d, idx) => (
+              <p key={idx}>
+                <span className="summary-color-box" style={{ backgroundColor: d.color }}></span>
+                <strong>{d.name} : </strong> {d.value}
+              </p>
+            ))}
+          </div>
+        </div>
       )}
     </div>
   );

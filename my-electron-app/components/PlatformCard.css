@@ -35,3 +35,106 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
   transform: scale(1.05);
 }
+
+/* PlatformCard.css */
+.platform-card {
+  background-color: #1e1e2f; /* dark card */
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  padding: 20px;
+  margin: 10px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-top: 5px solid transparent; /* will be dynamic platform color */
+  color: #eee;
+}
+
+.platform-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+}
+
+.platform-card h2 {
+  margin-bottom: 16px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.platform-card .stats p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+  color: #ccc;
+}
+
+.platform-card .stats strong {
+  color: #fff;
+}
+
+.heatmap-section {
+  margin-top: 16px;
+}
+
+.heatmap-wrapper {
+  margin-top: 8px;
+}
+
+.heatmap-img {
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.heatmap-placeholder {
+  background-color: #2a2a40;
+  border-radius: 8px;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-weight: 500;
+}
+
+/* Cards grid in ProfileStats */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+
+/* Heatmaps container at bottom */
+.heatmaps-container {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.heatmap-card {
+  background-color: #1e1e2f;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  transition: transform 0.2s, box-shadow 0.2s;
+  color: #eee;
+}
+
+.heatmap-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+}
+
+.heatmap-card h3 {
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.activity-count {
+  font-weight: 500;
+  color: #ccc;
+  margin-bottom: 8px;
+}
+
