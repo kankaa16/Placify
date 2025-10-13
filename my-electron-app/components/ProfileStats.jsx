@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PlatformCard from "./PlatformCard.jsx";
 import Charts from "./Charts.jsx";
-import Heatmap from "./Heatmap.jsx"; // optional if you want a separate component
+import Heatmap from "./Heatmap.jsx"; 
 import axios from "axios";
 import { normalizePlatform } from "../src/utilis/normalizePlatformData.js";
 import "./ProfileStats.css";
@@ -17,31 +17,28 @@ export default function ProfileStats() {
     huggingface: "",
   });
 
-  const [readinessScore, setReadinessScore] = useState(null);
+  // const [readinessScore, setReadinessScore] = useState(null);
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(false);
   const [errorMap, setErrorMap] = useState({});
 
- const calculateReadinessScore = (stats) => {
-  const maxDSAPoints = 600; // Max weighted points for DSA (can adjust)
-  const maxCommits = 150;   // Max commits for dev score
+//  const calculateReadinessScore = (stats) => {
+//   const maxDSAPoints = 600; 
+//   const maxCommits = 150;   
 
-  // DSA: LeetCode difficulty-weighted + Codeforces total
-  const lc = stats.leetcode || {};
-  const cf = stats.codeforces || {};
-  const lcPoints = (lc.easySolved || 0) * 1 + (lc.mediumSolved || 0) * 2 + (lc.hardSolved || 0) * 3;
-  const cfPoints = cf.totalSolved || 0; // each CF question = 1 point
-  const totalDSAPoints = lcPoints + cfPoints;
-  const dsaScore = Math.min(totalDSAPoints / maxDSAPoints, 1) * 10;
+//   const lc = stats.leetcode || {};
+//   const cf = stats.codeforces || {};
+//   const lcPoints = (lc.easySolved || 0) * 1 + (lc.mediumSolved || 0) * 2 + (lc.hardSolved || 0) * 3;
+//   const cfPoints = cf.totalSolved || 0; 
+//   const totalDSAPoints = lcPoints + cfPoints;
+//   const dsaScore = Math.min(totalDSAPoints / maxDSAPoints, 1) * 10;
 
-  // Dev: GitHub commits
-  const githubCommits = stats.github?.totalContributions || 0;
-  const devScore = Math.min(githubCommits / maxCommits, 1) * 10;
+//   const githubCommits = stats.github?.totalContributions || 0;
+//   const devScore = Math.min(githubCommits / maxCommits, 1) * 10;
 
-  // Weighted readiness: 60% DSA, 40% Dev
-  const readiness = dsaScore * 0.6 + devScore * 0.4;
-  return Math.min(Math.round(readiness * 10) / 10, 10);
-};
+//   const readiness = dsaScore * 0.6 + devScore * 0.4;
+//   return Math.min(Math.round(readiness * 10) / 10, 10);
+// };
 
 
 
@@ -91,8 +88,8 @@ export default function ProfileStats() {
       setStats(map);
       setErrorMap(errors);
       if (Object.keys(map).length > 0) {
-  const score = calculateReadinessScore(map);
-setReadinessScore(score);
+//   const score = calculateReadinessScore(map);
+// setReadinessScore(score);
 }
     } catch (e) {
       console.error("Unexpected error:", e);
@@ -127,14 +124,13 @@ setReadinessScore(score);
         {loading ? "Fetching..." : "Fetch Stats"}
       </button>
 
-{readinessScore !== null && (
+{/* {readinessScore !== null && (
   <div className="readiness-score">
     <h2>Your Readiness Score: {readinessScore}/10</h2>
   </div>
-)}
+)} */}
 
 
-      {/* CARDS GRID */}
       <div className="cards-grid">
         {platforms.map(
           (p) =>
@@ -150,7 +146,6 @@ setReadinessScore(score);
             ))
         )}
 
-        {/* GitHub Pull Requests */}
         {stats.github?.pullRequestCount > 0 && (
           <div className="github-prs">
             <strong>Pull requests:</strong> {stats.github.pullRequestCount}
@@ -168,15 +163,14 @@ setReadinessScore(score);
         )}
       </div>
 
-      {/* ANALYSIS CHARTS */}
+      
       {Object.keys(stats).length > 0 && (
         <div className="analysis-grid">
           <Charts stats={stats} />
         </div>
       )}
 
-      {/* ACTIVITY HEATMAPS BELOW CHARTS */}
-      {/* ACTIVITY HEATMAPS BELOW CHARTS */}
+      
 {Object.keys(stats).length > 0 && (
   <div className="heatmaps-container">
     {platforms.map(
@@ -187,7 +181,6 @@ setReadinessScore(score);
           <div key={`heatmap-${p.key}`} className="heatmap-card">
             <h3>{p.label} Activity</h3>
 
-            {/* GitHub heatmap */}
             {p.key === "github" && stats.github.heatmapImage && (
               <div className="heatmap-wrapper">
                 <p>{stats.github.totalContributions || 0} contributions this year</p>

@@ -2,7 +2,6 @@ function safeNumber(v) {
   return typeof v === "number" ? v : parseInt(v) || 0;
 }
 
-// ---------- LEETCODE ----------
 export function normalizeLeet(raw) {
   const out = {
     easySolved: 0,
@@ -28,7 +27,6 @@ export function normalizeLeet(raw) {
 }
 
 
-// ---------- CODEFORCES ----------
 export function normalizeCodeforces(raw) {
   const out = { totalSolved: 0, rating: 0, maxRating: 0, rank: "", contributionsCalendar: {}, submissions: [] };
   if (!raw) return out;
@@ -53,7 +51,6 @@ export function normalizeCodeforces(raw) {
   return out;
 }
 
-// ---------- CODECHEF ----------
 export function normalizeCodeChef(raw) {
   const out = { totalSolved: 0, stars: 0, rating: 0, highestRating: 0, contributionsCalendar: {}, submissions: [] };
   if (!raw) return out;
@@ -80,7 +77,6 @@ export function normalizeCodeChef(raw) {
   return out;
 }
 
-// ---------- GITHUB ----------
 export function normalizeGitHub(raw) {
   const out = {
     repos: 0,
@@ -97,12 +93,9 @@ export function normalizeGitHub(raw) {
   out.followers = safeNumber(raw.followers);
   out.following = safeNumber(raw.following);
   out.heatmapImage = raw.heatmapImage || "";
-
-  // new field from backend
   out.totalContributions = safeNumber(raw.totalContributions || 0);
   out.contributionsCalendar = raw.contributionsCalendar || {};
 
-  // Convert contributionsCalendar to submissions for heatmap
   out.submissions = Object.entries(out.contributionsCalendar).flatMap(([date, count]) =>
     Array.from({ length: count }, () => ({ timestamp: new Date(date).getTime() }))
   );

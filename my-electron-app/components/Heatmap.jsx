@@ -5,7 +5,6 @@ import "./Heatmap.css";
 
 const fmt = d => d.toISOString().slice(0,10);
 
-// Aggregate submissions into a date->count map
 function aggregateSubmissions(submissions = [], days = 365) {
   const map = {};
   const now = new Date();
@@ -33,10 +32,8 @@ export default function Heatmap({ stats, days = 365 }) {
         {Object.entries(stats).map(([platformKey, data]) => {
           if(!data) return null;
 
-          // Use actual contributionsCalendar if available
           let map = data.contributionsCalendar || {};
           
-          // For platforms like LeetCode, fallback to aggregating submissions
           if(platformKey === "leetcode" && data.submissions){
             map = aggregateSubmissions(data.submissions, days);
           }

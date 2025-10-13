@@ -231,7 +231,7 @@ app.get("/api/atcoder/:username", async (req,res)=>{
 });
 
 // GitHub
-// GitHub
+
 app.get("/api/github/:username", async (req, res) => {
   const { username } = req.params;
   try {
@@ -242,7 +242,7 @@ app.get("/api/github/:username", async (req, res) => {
         : {}
     });
 
-    // Fetch contribution data using GraphQL API
+    // fetch contributions using GraphQL
     const { data: contribData } = await axios.post(
       "https://api.github.com/graphql",
       {
@@ -355,7 +355,6 @@ app.get("/api/leetcode/:username", async (req, res) => {
     const hardSolved = acStats.find(d => d.difficulty === "Hard")?.count || 0;
     const totalSolved = easySolved + mediumSolved + hardSolved;
 
-    // Now we can extract submission calendar safely
     const calendarData = matchedUser.userCalendar?.submissionCalendar
       ? JSON.parse(matchedUser.userCalendar.submissionCalendar)
       : {};
