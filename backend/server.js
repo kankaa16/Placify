@@ -231,6 +231,7 @@ app.get("/api/atcoder/:username", async (req,res)=>{
 });
 
 // GitHub
+// GitHub
 app.get("/api/github/:username", async (req, res) => {
   const { username } = req.params;
   try {
@@ -241,7 +242,7 @@ app.get("/api/github/:username", async (req, res) => {
         : {}
     });
 
-    // Fetch contributions via GraphQL
+    // Fetch contribution data using GraphQL API
     const { data: contribData } = await axios.post(
       "https://api.github.com/graphql",
       {
@@ -271,9 +272,13 @@ app.get("/api/github/:username", async (req, res) => {
       }
     );
 
-    
+    const calendar =
+      contribData?.data?.user?.contributionsCollection?.contributionCalendar || {};
+
+    const totalContributions = calendar.totalContributions || 0;
     const contributionsCalendar = {};
-    const weeks = contribData.data.user.contributionsCollection.contributionCalendar.weeks || [];
+
+    const weeks = calendar.weeks || [];
     weeks.forEach(week => {
       week.contributionDays.forEach(day => {
         contributionsCalendar[day.date] = day.contributionCount;
@@ -284,13 +289,23 @@ app.get("/api/github/:username", async (req, res) => {
       repos: profileData.public_repos || 0,
       followers: profileData.followers || 0,
       following: profileData.following || 0,
-      contributionsCalendar
+      totalContributions,
+      contributionsCalendar,
+      heatmapImage: `https://ghchart.rshah.org/${username}`,
     });
   } catch (err) {
     console.error("GitHub fetch failed:", err.message);
-    res.json({ repos: 0, followers: 0, following: 0, contributionsCalendar: {} });
+    res.json({
+      repos: 0,
+      followers: 0,
+      following: 0,
+      totalContributions: 0,
+      contributionsCalendar: {},
+      heatmapImage: ""
+    });
   }
 });
+
 
 
 app.get("/api/leetcode/:username", async (req, res) => {

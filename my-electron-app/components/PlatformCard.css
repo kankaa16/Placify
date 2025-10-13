@@ -10,3 +10,28 @@
 .platform-name { margin:0; font-size:16px; }
 .platform-total { color:#cbd5e1; font-size:13px; }
 .stats-list p { display:flex; justify-content:space-between; margin:6px 0; color:#d1d5db; font-size:13px; }
+.heatmap-section {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.activity-count {
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.heatmap-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.heatmap-img {
+  width: 90%;
+  max-width: 750px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  transform: scale(1.05);
+}

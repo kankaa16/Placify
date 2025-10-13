@@ -129,14 +129,7 @@ export default function ProfileStats() {
       {Object.keys(stats).length > 0 && (
         <div className="analysis-grid">
           <Charts stats={stats} />
-<Heatmap
-  stats={Object.fromEntries(
-    Object.entries(stats)
-      .filter(([k,v]) => v?.contributionsCalendar)
-      .map(([k,v]) => [k, { contributionsCalendar: v.contributionsCalendar }])
-  )}
-  days={365}
-/>
+
 
         </div>
       )}

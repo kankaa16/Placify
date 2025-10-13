@@ -4,7 +4,14 @@ function safeNumber(v) {
 
 // ---------- LEETCODE ----------
 export function normalizeLeet(raw) {
-  const out = { easySolved: 0, mediumSolved: 0, hardSolved: 0, totalSolved: 0, contributionsCalendar: {}, submissions: [] };
+  const out = {
+    easySolved: 0,
+    mediumSolved: 0,
+    hardSolved: 0,
+    totalSolved: 0,
+    submissionCalendar: {},
+    totalSubmissions: 0
+  };
   if (!raw) return out;
 
   out.easySolved = safeNumber(raw.easySolved || raw.easy || 0);
@@ -12,15 +19,14 @@ export function normalizeLeet(raw) {
   out.hardSolved = safeNumber(raw.hardSolved || raw.hard || 0);
   out.totalSolved = safeNumber(raw.totalSolved || out.easySolved + out.mediumSolved + out.hardSolved);
 
-  if (raw.contributionsCalendar) out.contributionsCalendar = raw.contributionsCalendar;
-  if (raw.submissions) {
-    out.submissions = raw.submissions
-      .map(s => ({ timestamp: s.timestamp ? s.timestamp : Date.parse(s) }))
-      .filter(Boolean);
+  if (raw.submissionCalendar) {
+    out.submissionCalendar = raw.submissionCalendar;
+    out.totalSubmissions = Object.values(raw.submissionCalendar).reduce((a, b) => a + b, 0);
   }
 
   return out;
 }
+
 
 // ---------- CODEFORCES ----------
 export function normalizeCodeforces(raw) {
@@ -80,17 +86,21 @@ export function normalizeGitHub(raw) {
     repos: 0,
     followers: 0,
     following: 0,
-    totalSolved: 0,
+    totalContributions: 0,
     contributionsCalendar: {},
-    submissions: []
+    submissions: [],
+    heatmapImage: ""
   };
   if (!raw) return out;
 
   out.repos = safeNumber(raw.repos);
   out.followers = safeNumber(raw.followers);
   out.following = safeNumber(raw.following);
+  out.heatmapImage = raw.heatmapImage || "";
+
+  // new field from backend
+  out.totalContributions = safeNumber(raw.totalContributions || 0);
   out.contributionsCalendar = raw.contributionsCalendar || {};
-  out.totalSolved = out.repos;
 
   // Convert contributionsCalendar to submissions for heatmap
   out.submissions = Object.entries(out.contributionsCalendar).flatMap(([date, count]) =>
@@ -99,6 +109,7 @@ export function normalizeGitHub(raw) {
 
   return out;
 }
+
 
 
 
