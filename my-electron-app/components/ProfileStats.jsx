@@ -17,9 +17,34 @@ export default function ProfileStats() {
     huggingface: "",
   });
 
+  const [readinessScore, setReadinessScore] = useState(null);
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(false);
   const [errorMap, setErrorMap] = useState({});
+
+ const calculateReadinessScore = (stats) => {
+  const maxDSAPoints = 600; // Max weighted points for DSA (can adjust)
+  const maxCommits = 150;   // Max commits for dev score
+
+  // DSA: LeetCode difficulty-weighted + Codeforces total
+  const lc = stats.leetcode || {};
+  const cf = stats.codeforces || {};
+  const lcPoints = (lc.easySolved || 0) * 1 + (lc.mediumSolved || 0) * 2 + (lc.hardSolved || 0) * 3;
+  const cfPoints = cf.totalSolved || 0; // each CF question = 1 point
+  const totalDSAPoints = lcPoints + cfPoints;
+  const dsaScore = Math.min(totalDSAPoints / maxDSAPoints, 1) * 10;
+
+  // Dev: GitHub commits
+  const githubCommits = stats.github?.totalContributions || 0;
+  const devScore = Math.min(githubCommits / maxCommits, 1) * 10;
+
+  // Weighted readiness: 60% DSA, 40% Dev
+  const readiness = dsaScore * 0.6 + devScore * 0.4;
+  return Math.min(Math.round(readiness * 10) / 10, 10);
+};
+
+
+
 
   const platforms = [
     { key: "leetcode", color: "#FFA116", label: "LeetCode" },
@@ -65,6 +90,10 @@ export default function ProfileStats() {
 
       setStats(map);
       setErrorMap(errors);
+      if (Object.keys(map).length > 0) {
+  const score = calculateReadinessScore(map);
+setReadinessScore(score);
+}
     } catch (e) {
       console.error("Unexpected error:", e);
     }
@@ -74,6 +103,10 @@ export default function ProfileStats() {
 
   return (
     <div className="profile-container">
+      <div className="back-btn" onClick={() => window.history.back()}>
+  ×
+</div>
+
       <h1 className="profile-title">Profile Tracker</h1>
 
       <div className="inputs-grid">
@@ -93,6 +126,13 @@ export default function ProfileStats() {
       <button onClick={handleFetch} disabled={loading} className="fetch-btn">
         {loading ? "Fetching..." : "Fetch Stats"}
       </button>
+
+{readinessScore !== null && (
+  <div className="readiness-score">
+    <h2>Your Readiness Score: {readinessScore}/10</h2>
+  </div>
+)}
+
 
       {/* CARDS GRID */}
       <div className="cards-grid">
