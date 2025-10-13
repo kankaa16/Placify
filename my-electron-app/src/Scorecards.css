@@ -118,3 +118,8 @@
   min-width: 150px; /* ensures responsive container gets width */
   min-height: 150px;
 }
+.github-heatmap-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}

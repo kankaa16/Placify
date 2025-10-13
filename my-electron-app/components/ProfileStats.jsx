@@ -25,10 +25,8 @@ export default function ProfileStats() {
     { key: "leetcode", color: "#FFA116", label: "LeetCode" },
     { key: "codeforces", color: "#1F8ACB", label: "Codeforces" },
     { key: "codechef", color: "#5E9EFF", label: "CodeChef" },
-    { key: "hackerrank", color: "#2EC4B6", label: "HackerRank" },
     { key: "atcoder", color: "#FF6B6B", label: "AtCoder" },
     { key: "github", color: "#6E5494", label: "GitHub" },
-    { key: "huggingface", color: "#F9A826", label: "HuggingFace" },
   ];
 
   const handleFetch = async () => {
@@ -96,27 +94,50 @@ export default function ProfileStats() {
       <button onClick={handleFetch} disabled={loading} className="fetch-btn">
         {loading ? "Fetching..." : "Fetch Stats"}
       </button>
+<div className="cards-grid">
+  {platforms.map(
+    (p) =>
+      handles[p.key] &&
+      (stats[p.key] ? (
+        <PlatformCard key={p.key} name={p.key} stats={stats[p.key]} color={p.color} />
+      ) : (
+        errorMap[p.key] && (
+          <div key={p.key} className="error-card">
+            <p>{errorMap[p.key]}</p>
+          </div>
+        )
+      ))
+  )}
 
-      <div className="cards-grid">
-        {platforms.map(
-          (p) =>
-            handles[p.key] &&
-            (stats[p.key] ? (
-              <PlatformCard key={p.key} name={p.key} stats={stats[p.key]} color={p.color} />
-            ) : (
-              errorMap[p.key] && (
-                <div key={p.key} className="error-card">
-                  <p>{errorMap[p.key]}</p>
-                </div>
-              )
-            ))
-        )}
-      </div>
+  {/* GitHub Pull Requests */}
+  {stats.github?.pullRequestCount > 0 && (
+    <div className="github-prs">
+      <strong>Pull requests:</strong> {stats.github.pullRequestCount}
+      <ul>
+        {stats.github.pullRequests.map(pr => (
+          <li key={pr.id}>
+            <a href={pr.url} target="_blank" rel="noreferrer">{pr.title}</a>
+            <span> — {new Date(pr.created_at).toLocaleDateString()}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
+</div>
+
 
       {Object.keys(stats).length > 0 && (
         <div className="analysis-grid">
           <Charts stats={stats} />
-          <Heatmap stats={stats} days={365} />
+<Heatmap
+  stats={Object.fromEntries(
+    Object.entries(stats)
+      .filter(([k,v]) => v?.contributionsCalendar)
+      .map(([k,v]) => [k, { contributionsCalendar: v.contributionsCalendar }])
+  )}
+  days={365}
+/>
+
         </div>
       )}
     </div>

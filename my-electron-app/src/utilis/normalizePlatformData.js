@@ -56,6 +56,8 @@ export function normalizeCodeChef(raw) {
   out.stars = safeNumber(raw.ratingStars || raw.stars || 0);
   out.rating = safeNumber(raw.rating || 0);
   out.highestRating = safeNumber(raw.highestRating || 0);
+  out.totalSolved = safeNumber(raw.totalSolved || raw.problemsSolvedCount || 0);
+
 
   if (Array.isArray(raw.solvedProblems)) {
     out.submissions = raw.solvedProblems
@@ -74,17 +76,31 @@ export function normalizeCodeChef(raw) {
 
 // ---------- GITHUB ----------
 export function normalizeGitHub(raw) {
-  const out = { repos: 0, followers: 0, following: 0, totalSolved: 0, contributionsCalendar: {}, submissions: [] };
+  const out = {
+    repos: 0,
+    followers: 0,
+    following: 0,
+    totalSolved: 0,
+    contributionsCalendar: {},
+    submissions: []
+  };
   if (!raw) return out;
 
-  out.repos = safeNumber(raw.repos);           // match backend
-  out.followers = safeNumber(raw.followers);   // match backend
-  out.following = safeNumber(raw.following);   // match backend
-  out.totalSolved = out.repos;
+  out.repos = safeNumber(raw.repos);
+  out.followers = safeNumber(raw.followers);
+  out.following = safeNumber(raw.following);
   out.contributionsCalendar = raw.contributionsCalendar || {};
+  out.totalSolved = out.repos;
+
+  // Convert contributionsCalendar to submissions for heatmap
+  out.submissions = Object.entries(out.contributionsCalendar).flatMap(([date, count]) =>
+    Array.from({ length: count }, () => ({ timestamp: new Date(date).getTime() }))
+  );
 
   return out;
 }
+
+
 
 
 // ---------- ATCODER ----------

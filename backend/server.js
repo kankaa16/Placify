@@ -148,22 +148,38 @@ app.put("/api/profile/:userId/platform", async (req, res) => {
 
 
 // Codeforces
+// Codeforces
 app.get("/api/codeforces/:username", async (req, res) => {
   const { username } = req.params;
   try {
-    const { data } = await axios.get(`https://codeforces.com/api/user.status?handle=${username}`);
-    const submissions = data.result || [];
+    // Fetch submissions
+    const { data: subData } = await axios.get(`https://codeforces.com/api/user.status?handle=${username}`);
+    const submissions = subData.result || [];
+
     const contributionsCalendar = {};
     submissions.forEach(s => {
-      const date = new Date(s.creationTimeSeconds*1000).toISOString().slice(0,10);
+      const date = new Date(s.creationTimeSeconds * 1000).toISOString().slice(0, 10);
       contributionsCalendar[date] = (contributionsCalendar[date] || 0) + 1;
     });
-    res.json({ total: submissions.length, contributionsCalendar });
+
+    // Fetch user info for rating, maxRating, rank
+    const { data: infoData } = await axios.get(`https://codeforces.com/api/user.info?handles=${username}`);
+    const userInfo = infoData.result?.[0] || {};
+
+    res.json({
+      totalSolved: submissions.length,
+      rating: userInfo.rating || 0,
+      maxRating: userInfo.maxRating || 0,
+      rank: userInfo.rank || "",
+      contributionsCalendar,
+      submissions: submissions.map(s => ({ timestamp: s.creationTimeSeconds * 1000 }))
+    });
   } catch (err) {
     console.error("Codeforces fetch failed:", err.message);
-    res.json({ total: 0, contributionsCalendar: {} });
+    res.json({ totalSolved: 0, rating: 0, maxRating: 0, rank: "", contributionsCalendar: {}, submissions: [] });
   }
 });
+
 
 // CodeChef
 app.get("/api/codechef/:username", async (req,res)=>{
@@ -171,10 +187,11 @@ app.get("/api/codechef/:username", async (req,res)=>{
   try{
     const { data } = await axios.get(`https://www.codechef.com/users/${username}`);
     const $ = cheerio.load(data);
+    const totalSolved = Number($('.problem-solved').text().trim()) || 0;
     const rating = $(".rating-number").first().text().trim() || "0";
     const maxRating = $(".rating-number").last().text().trim() || "0";
     const stars = $(".rating-star").length || 0;
-    res.json({ rating, maxRating, stars });
+    res.json({ rating, maxRating, stars,totalSolved });
   } catch(err){
     console.error("CodeChef fetch failed:", err.message);
     res.json({ rating:0, maxRating:0, stars:0 });
@@ -214,56 +231,67 @@ app.get("/api/atcoder/:username", async (req,res)=>{
 });
 
 // GitHub
-// GitHub route
-app.get("/api/github/:username", async (req,res) => {
+app.get("/api/github/:username", async (req, res) => {
   const { username } = req.params;
   try {
-    // Fetch contributions calendar
-    const { data: contribData } = await axios.get(`https://github-contributions-api.jogruber.de/v4/${username}`);
-    const contributionsCalendar = {};
-    (contribData.contributions || []).forEach(d => { contributionsCalendar[d.date] = d.count; });
-
-    // Fetch profile info from GitHub API
+    // Fetch GitHub profile info
     const { data: profileData } = await axios.get(`https://api.github.com/users/${username}`, {
-      headers: { Authorization: `token ${process.env.GITHUB_TOKEN}` } // optional if rate-limited
+      headers: process.env.GITHUB_TOKEN
+        ? { Authorization: `token ${process.env.GITHUB_TOKEN}` }
+        : {}
     });
 
-    const stats = {
-      contributionsCalendar,
+    // Fetch contributions via GraphQL
+    const { data: contribData } = await axios.post(
+      "https://api.github.com/graphql",
+      {
+        query: `
+          query {
+            user(login: "${username}") {
+              contributionsCollection {
+                contributionCalendar {
+                  totalContributions
+                  weeks {
+                    contributionDays {
+                      date
+                      contributionCount
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `
+      },
+      {
+        headers: {
+          Authorization: `bearer ${process.env.GITHUB_TOKEN}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+
+    
+    const contributionsCalendar = {};
+    const weeks = contribData.data.user.contributionsCollection.contributionCalendar.weeks || [];
+    weeks.forEach(week => {
+      week.contributionDays.forEach(day => {
+        contributionsCalendar[day.date] = day.contributionCount;
+      });
+    });
+
+    res.json({
       repos: profileData.public_repos || 0,
       followers: profileData.followers || 0,
-      following: profileData.following || 0
-    };
-
-    res.json(stats);
-  } catch(err){
+      following: profileData.following || 0,
+      contributionsCalendar
+    });
+  } catch (err) {
     console.error("GitHub fetch failed:", err.message);
-    res.json({
-      contributionsCalendar:{},
-      repos:0,
-      followers:0,
-      following:0
-    });
+    res.json({ repos: 0, followers: 0, following: 0, contributionsCalendar: {} });
   }
 });
 
-
-
-// HuggingFace
-app.get("/api/huggingface/:username", async (req,res)=>{
-  const { username } = req.params;
-  try{
-    const { data } = await axios.get(`https://huggingface.co/api/users/${username}`);
-    res.json({
-      name: data?.name || "-",
-      followers: data?.followers || 0,
-      repos: data?.repositories?.length || 0
-    });
-  } catch(err){
-    console.error("HuggingFace fetch failed:", err.message);
-    res.json({ name:"-", followers:0, repos:0 });
-  }
-});
 
 app.get("/api/leetcode/:username", async (req, res) => {
   const { username } = req.params;
