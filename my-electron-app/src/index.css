@@ -1,0 +1,28 @@
+:root {
+  --primary: #a78bfa;
+  --primary-dark: #7c3aed;
+  --bg-gradient: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  --text: #e5e7eb;
+  --text-muted: #9ca3af;
+  --error: #f87171;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-family: 'Poppins', system-ui, sans-serif;
+  background: var(--bg-gradient);   /* full screen gradient */
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

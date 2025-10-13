@@ -1,0 +1,41 @@
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.resume-analyzer {
+  width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #1e1e1e;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,255,200,0.2);
+}
+
+input[type="file"] {
+  margin: 15px 0;
+}
+
+button {
+  background-color: #00ffc1;
+  border: none;
+  color: #000;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.result {
+  margin-top: 20px;
+}
+
+.skills-chart {
+  margin: 20px 0;
+}

@@ -1,0 +1,36 @@
+.cert-page{padding:24px;max-width:980px;margin:0 auto}
+.cert-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.cert-title{font-size:22px;font-weight:700}
+.btn{border:1px solid #3b3f4a;background:#1f2430;color:#e2e8f0;border-radius:10px;padding:10px 14px;cursor:pointer}
+.btn.primary{background:#9F70FD;border-color:#9F70FD;color:#0b0f16}
+.btn.danger{background:#dc2626;border-color:#dc2626;color:#fff}
+.card{background:#151a23;border:1px solid #2a2f3a;border-radius:16px;padding:18px;margin-top:14px}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.badge{padding:4px 10px;border-radius:999px;border:1px solid #2a2f3a;color:#cbd5e1;font-size:12px;background:#0f1420}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+.row .label{color:#94a3b8;font-size:12px}
+.row .value{color:#e2e8f0}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+.divider{height:1px;background:#2a2f3a;margin:12px 0}
+.skills{display:flex;gap:6px;flex-wrap:wrap}
+.skill{background:#0f1420;border:1px solid #2a2f3a;color:#cbd5e1;border-radius:8px;padding:4px 8px;font-size:12px}
+.cert-thumb{max-height:56px;border-radius:8px;border:1px solid #2a2f3a}
+
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000}
+.modal{width:640px;max-width:92vw;background:#101521;border:1px solid #293140;border-radius:16px;padding:18px}
+.modal h3{margin:0 0 10px 0}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:12px;color:#a5b4fc}
+.input, .select{background:#0c111b;border:1px solid #263042;border-radius:10px;padding:10px;color:#e2e8f0}
+.full{grid-column:1/-1}
+.switch{display:flex;align-items:center;gap:8px;margin-top:8px}
+.footer{display:flex;justify-content:flex-end;gap:8px;margin-top:14px}
+
+/* PDF/Image preview overlay */
+.preview-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1100}
+.preview{width:900px;max-width:96vw;height:80vh;background:#0f1420;border:1px solid #2a2f3a;border-radius:12px;display:flex;flex-direction:column}
+.preview-header{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid #2a2f3a}
+.preview-body{flex:1}
+.preview-iframe{width:100%;height:100%;border:0;border-bottom-left-radius:12px;border-bottom-right-radius:12px}

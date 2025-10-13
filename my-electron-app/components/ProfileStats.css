@@ -1,0 +1,22 @@
+.profile-container {
+  min-height: 100vh;
+  background: #111214;
+  color: #fff;
+  padding: 28px;
+  font-family: Inter, system-ui, Arial, sans-serif;
+}
+.profile-title {
+  font-size: 28px;
+  color: #00bfa5;
+  text-align: center;
+  margin-bottom: 18px;
+}
+.inputs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 14px; }
+.input-box label { display:block; color:#9aa0a6; margin-bottom:6px; font-size:13px; text-transform: capitalize; }
+.input-box input { width:100%; padding:8px 10px; border-radius:8px; border:1px solid #2a2a2a; background:#141414; color:#fff; }
+.fetch-btn { display:block; margin: 12px auto; padding:10px 20px; background:#00bfa5; color:#000; border-radius:10px; border:none; cursor:pointer; font-weight:700; }
+.cards-grid { display:grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap:16px; margin:16px 0; }
+.charts-grid { display:grid; grid-template-columns: 1fr 420px; gap:16px; align-items:start; }
+@media (max-width: 900px) {
+  .charts-grid { grid-template-columns: 1fr; }
+}

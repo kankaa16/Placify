@@ -1,0 +1,30 @@
+/* ATSScore.css */
+.ats-chart-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.circular-chart {
+  width: 120px;
+  height: 120px;
+  transform: rotate(-90deg);
+}
+.circle-bg {
+  fill: none;
+  stroke: #334155;
+  stroke-width: 3.8;
+}
+.circle {
+  fill: none;
+  stroke: #0ef;
+  stroke-width: 3.8;
+  stroke-linecap: round;
+  transition: stroke-dasharray 1s ease-out;
+}
+.percentage {
+  fill: #f8fafc;
+  font-size: 0.8em;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  transform: rotate(90deg);
+}
