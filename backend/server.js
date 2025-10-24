@@ -10,14 +10,14 @@ import authroute from "./routes/authroute.js";
 import resumeRoutes from "./routes/resumeroute.js";
 import scoreroute from "./routes/scoreroute.js";
 import User from "./models/usermodel.js";
-
+import analyticsRoute from "./routes/analyticsRoutes.js";
 const app = express();
 
 // connect database
 connectDB();
 
 app.use(cors({
-  origin: "http://localhost:5173",
+  origin: "*",
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
@@ -28,6 +28,7 @@ app.use(express.json());
 app.use("/api/auth", authroute);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/score", scoreroute);
+app.use("/api/analytics", analyticsRoute);
 
 
 // Fetch user profile

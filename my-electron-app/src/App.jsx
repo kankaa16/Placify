@@ -13,6 +13,7 @@ import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import ResumeUpload from './ResumeUpload.jsx';
 import Scorecards from './Scorecards.jsx';
 import ProfileStats from '../components/ProfileStats.jsx';
+import PlacementAnalytics from './PlacementAnalytics';
 
 const ScorecardsWrapper = () => {
   const { user } = useAuth();
@@ -100,6 +101,17 @@ function AppContent() {
     </ProtectedRoute>
   }
 />
+
+<Route
+  path="/placement-analytics"
+  element={
+    <ProtectedRoute allowedRoles={['student']}>
+      <PlacementAnalytics />
+    </ProtectedRoute>
+  }
+/>
+
+
 
 
 

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './sdashboard.css';
 import { useAuth } from '../contexts/AuthContext';
+import PlacementAnalytics from "./PlacementAnalytics";
 import {
   BookOpen,
   Code,
@@ -66,7 +67,7 @@ const StudentDashboard = () => {
       colorClass: 'card-purple',
       iconClass: 'icon-purple',
       coming: false,
-      route: '/analytics'
+      route: '/placement-analytics'
     },
     {
       id: 'interview',
