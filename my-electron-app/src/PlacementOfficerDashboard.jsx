@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from "react-router-dom";
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { 
   Users, 
@@ -7,7 +8,6 @@ import {
   TrendingUp, 
   FileText, 
   LogOut,
-  User,
   Settings,
   PlusCircle,
   Search
@@ -16,6 +16,7 @@ import './adashboard.css';
 
 const PlacementOfficerDashboard = () => {
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try { await logout(); } 
@@ -24,7 +25,7 @@ const PlacementOfficerDashboard = () => {
 
   const dashboardCards = [
     { id: 'students', title: 'Student Management', description: 'View and manage student profiles and readiness', icon: Users, colorClass: 'card-blue', coming: false },
-    { id: 'companies', title: 'Company Data', description: 'Manage company placement statistics', icon: Building2, colorClass: 'card-green', coming: false },
+    { id: 'managecompanies', title: 'Company Data', description: 'Manage company placement statistics', icon: Building2, colorClass: 'card-green', coming: false },
     { id: 'analytics', title: 'Placement Analytics', description: 'View comprehensive placement insights', icon: TrendingUp, colorClass: 'card-purple', coming: false },
     { id: 'reports', title: 'Generate Reports', description: 'Create placement reports and statistics', icon: FileText, colorClass: 'card-yellow', coming: true }
   ];
@@ -35,6 +36,12 @@ const PlacementOfficerDashboard = () => {
     { label: 'Active Companies', value: '42', colorClass: 'value-purple' },
     { label: 'Avg Package', value: '₹8.5L', colorClass: 'value-yellow' }
   ];
+
+  const handleCardClick = (id) => {
+    if (id === 'managecompanies') navigate('/manage-companies');
+    if (id === 'students') navigate('/student-management');
+    if (id === 'analytics') navigate('/analytics');
+  };
 
   return (
     <div className="dashboard-container">
@@ -49,17 +56,6 @@ const PlacementOfficerDashboard = () => {
           </div>
 
           <div className="header-actions">
-            {/* Profile Circle Button */}
-            {/* <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="circle-btn"
-              onClick={() => navigate('/profile')}
-              title="Profile"
-            >
-              <User style={{ width: 20, height: 20 }} />
-            </motion.div> */}
-          
-            {/* Settings Button */}
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="circle-btn"
@@ -68,8 +64,7 @@ const PlacementOfficerDashboard = () => {
             >
               <Settings style={{ width: 20, height: 20 }} />
             </motion.div>
-          
-            {/* Logout Button */}
+
             <motion.div
               whileHover={{ scale: 1.05 }}
               className="circle-btn logout-btn"
@@ -106,14 +101,21 @@ const PlacementOfficerDashboard = () => {
 
         <div className="quick-actions">
           <div className="cards-grid">
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="card card-blue">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="card card-blue"
+              onClick={() => navigate("/add-company")}
+            >
               <PlusCircle className="icon-box" />
               <span>Add Company</span>
             </motion.button>
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="card card-green">
+
+            {/* <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="card card-green">
               <Search className="icon-box" />
               <span>Search Students</span>
-            </motion.button>
+            </motion.button> */}
+
             <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="card card-yellow">
               <FileText className="icon-box" />
               <span>Generate Report</span>
@@ -125,7 +127,14 @@ const PlacementOfficerDashboard = () => {
           {dashboardCards.map((card) => {
             const IconComponent = card.icon;
             return (
-              <motion.div key={card.id} className={`card ${card.colorClass}`}>
+              <motion.div
+                key={card.id}
+                className={`card ${card.colorClass}`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleCardClick(card.id)}
+                style={{ cursor: 'pointer' }}
+              >
                 {card.coming && <div className="badge">Coming Soon</div>}
                 <div className="icon-box"><IconComponent /></div>
                 <h3>{card.title}</h3>

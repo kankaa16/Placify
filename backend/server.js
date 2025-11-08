@@ -10,6 +10,12 @@ import authroute from "./routes/authroute.js";
 import resumeRoutes from "./routes/resumeroute.js";
 import scoreroute from "./routes/scoreroute.js";
 import User from "./models/usermodel.js";
+import companyRoutes from "./routes/companyroute.js";
+import studentRoutes from './routes/students.js';
+import applicationRoutes from "./routes/applicationroute.js";
+import messageRoutes from './routes/messageroute.js'
+import notificationRoutes from './routes/notificationroutes.js';
+
 
 const app = express();
 
@@ -20,7 +26,7 @@ app.use(cors({
   origin: "http://localhost:5173",
   credentials: true,
   allowedHeaders: ["Content-Type", "Authorization"],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
 }));
 app.use(express.json());
 
@@ -375,6 +381,11 @@ app.get("/api/leetcode/:username", async (req, res) => {
 });
 
 
+app.use("/api/companies", companyRoutes);
+app.use("/api/students", studentRoutes);
+app.use("/api/applications", applicationRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/messages", messageRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

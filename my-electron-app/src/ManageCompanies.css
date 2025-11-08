@@ -1,0 +1,354 @@
+.manage-container {
+  padding: 40px 60px;
+  background: #0e0e0e;
+  color: #e5e5e5;
+  min-height: 100vh;
+  font-family: "Inter", sans-serif;
+}
+
+/* Header bar */
+.header-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.header-bar h1 {
+  display: flex;
+  align-items: center;
+  font-size: 1.8rem;
+  gap: 10px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.add-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.2s;
+}
+
+.add-btn:hover {
+  background: #1d4ed8;
+}
+
+/* Grid layout */
+.company-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 26px;
+}
+
+/* Card styling */
+.company-card {
+  background: #181818;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.company-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.6);
+}
+
+/* Cover section */
+.card-cover {
+  position: relative;
+  height: 190px;
+  overflow: hidden;
+  border-bottom: 1px solid #222;
+}
+
+.cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(55%);
+  transition: transform 0.4s ease, filter 0.3s ease;
+}
+
+.company-card:hover .cover-img {
+  transform: scale(1.05);
+  filter: brightness(45%);
+}
+
+/* Overlay content */
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 18px 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.15));
+}
+
+.company-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.company-role {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #e5e5e5;
+  margin-bottom: 8px;
+}
+
+.cover-location {
+  font-size: 0.9rem;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Body */
+.card-body {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+}
+
+.edit-icon,
+.delete-icon {
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.edit-icon:hover {
+  color: #3b82f6;
+}
+
+.delete-icon:hover {
+  color: #ef4444;
+}
+
+.desc {
+  color: #bdbdbd;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Apply link */
+.apply-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.apply-link:hover {
+  color: #93c5fd;
+}
+
+/* Edit form */
+.edit-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px;
+  background: #1a1a1a;
+}
+
+.edit-form input,
+.edit-form textarea {
+  padding: 8px 10px;
+  background: #222;
+  color: #eee;
+  border: 1px solid #333;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.edit-form input:focus,
+.edit-form textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.save-btn,
+.cancel-btn {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.save-btn {
+  background: #2563eb;
+  color: white;
+}
+
+.save-btn:hover {
+  background: #1e40af;
+}
+
+.cancel-btn {
+  background: #444;
+  color: white;
+}
+
+.cancel-btn:hover {
+  background: #333;
+}
+
+.cover-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 18px 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.15));
+}
+
+.company-name {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 2px;
+}
+
+.company-role {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #e8e8e8;
+  margin-bottom: 10px;
+}
+
+.cover-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.95rem;
+  color: #d1d1d1;
+  margin-bottom: 10px;
+}
+
+.cover-ctc strong,
+.cover-criteria strong {
+  color: #fff;
+  font-weight: 600;
+  margin-right: 5px;
+}
+
+.cover-location {
+  font-size: 0.9rem;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+
+.header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 24px;
+  border-radius: 12px;
+  border: 1px solid rgba(75, 85, 99, 0.4);
+  margin-bottom: 25px;
+  position: relative;
+}
+
+/* Title on left */
+.header-bar h1 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f3f4f6;
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Button container on right */
+.btns {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: static; /* ensures buttons stay inside header */
+}
+
+/* Reset for both buttons */
+.add-btn,
+.back-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: 0.25s ease;
+  position: relative;
+}
+
+/* Add Company button */
+.add-btn {
+margin-right: 60px;
+  background: rgba(99, 102, 241, 0.9);
+  color: #f3f4f6;
+}
+.add-btn:hover {
+  background: rgba(129, 140, 248, 0.95);
+}
+
+/* Back button */
+.back-btn {
+    margin-top: 35px;
+    margin-right: 55px;
+  background: rgba(55, 65, 81, 0.85);
+  color: #e5e7eb;
+}
+.back-btn:hover {
+  background: rgba(75, 85, 99, 0.9);
+}
+
+/* Prevent overlap on small screens */
+@media (max-width: 640px) {
+  .header-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .btns {
+    align-self: flex-end;
+  }
+}

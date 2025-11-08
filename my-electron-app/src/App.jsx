@@ -12,7 +12,14 @@ import ProfilePage from './ProfilePage.jsx';
 import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import ResumeUpload from './ResumeUpload.jsx';
 import Scorecards from './Scorecards.jsx';
+import AddCompany from "./AddCompany.jsx";
+import ManageCompanies from './ManageCompanies.jsx';
+
 import ProfileStats from '../components/ProfileStats.jsx';
+import PlacementAnalytics from './PlacementAnalytics.jsx';
+import AdminStudentList from './AdminStudentList.jsx';
+import StudentProfile from './StudentProfile.jsx';
+
 
 const ScorecardsWrapper = () => {
   const { user } = useAuth();
@@ -112,6 +119,52 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
+
+<Route
+  path="/add-company"
+  element={
+    <ProtectedRoute allowedRoles={['admin']}>
+      <AddCompany />
+    </ProtectedRoute>
+  }
+/>
+
+
+<Route
+  path="/manage-companies"
+  element={
+    <ProtectedRoute allowedRoles={['admin']}>
+      <ManageCompanies />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/student-management"
+  element={
+    <ProtectedRoute allowedRoles={['admin']}>
+      <AdminStudentList />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/student/:id"
+  element={
+    <ProtectedRoute allowedRoles={['admin']}>
+      <StudentProfile />
+    </ProtectedRoute>
+  }
+/>
+
+          <Route
+            path="/placement-analytics"
+            element={
+              <ProtectedRoute>
+                <PlacementAnalytics />
+              </ProtectedRoute>
+            }
+          />
+
 
           <Route
             path="/profile"

@@ -1,0 +1,181 @@
+.analytics-container {
+  background-color: #0b0c10;
+  color: #eaf2f8;
+  min-height: 100vh;
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.analytics-container h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #6ecbff;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.close-container {
+  align-self: flex-end;
+  margin-bottom: 1rem;
+}
+
+.close-btn {
+  background: transparent;
+  border: none;
+  color: #ff6363;
+  font-size: 28px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.close-btn:hover {
+  color: #ff9b9b;
+  transform: scale(1.1) rotate(45deg);
+}
+
+.controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.search-mode,
+.option-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.search-mode label,
+.option-selector label {
+  font-weight: 500;
+  color: #b0c4de;
+}
+
+select {
+  background-color: #1a1d23;
+  color: #e2e8f0;
+  border: 1px solid #4ea8de;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+select:hover {
+  border-color: #6ecbff;
+}
+
+.analytics-table {
+  background-color: #14181d;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 1000px;
+  box-shadow: 0 0 15px rgba(110, 203, 255, 0.1);
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: #1b1f25;
+  color: #6ecbff;
+  padding: 12px;
+  text-align: left;
+  border-bottom: 2px solid #2a2a2a;
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+tr:hover {
+  background-color: #1c2228;
+  transition: 0.2s ease-in-out;
+}
+
+.loading {
+  color: #6ecbff;
+  font-weight: 500;
+  margin-top: 1rem;
+}
+
+/* ========================
+   Company Detail Section
+   ======================== */
+.company-detail {
+  background-color: #14181d;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  width: 90%;
+  max-width: 800px;
+  box-shadow: 0 0 20px rgba(78, 168, 222, 0.2);
+}
+
+.company-detail .detail-title {
+  font-size: 1.8rem;
+  color: #6ecbff;
+  margin-bottom: 1rem;
+}
+
+.company-detail p {
+  margin: 0.5rem 0;
+  font-size: 14px;
+}
+
+.company-detail a {
+  color: #4ea8de;
+  text-decoration: underline;
+}
+
+.salary-info ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.salary-info li {
+  margin-bottom: 0.3rem;
+}
+
+.skills-section {
+  margin-top: 1rem;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0.5rem;
+}
+
+.skill-badge {
+  background-color: #4ea8de;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+
+.chart-section {
+  margin-top: 1.5rem;
+}
+
+.chart-section h4 {
+  color: #6ecbff;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}

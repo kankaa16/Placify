@@ -1,6 +1,7 @@
 import express from 'express';
 import { loginUser, registerUser, getCurrentUser, updateUserProfile } from '../controllers/authcontroller.js';
 import verifyToken from '../middlewares/verifyToken.js';
+import Application from '../models/Application.js';
 
 const router = express.Router();
 
@@ -17,6 +18,16 @@ router.post('/login', async (req, res) => {
 router.post('/register', async (req, res) => {
   try {
     const data = await registerUser(req.body);
+    // Automatically create a new application entry for students
+    if (data.user && data.user.role === "student") {
+      await Application.create({
+        student: data.user._id,
+        company: null,
+        status: "applied",
+        createdAt: new Date(),
+        updatedAt: new Date()
+      });
+    }
     res.status(201).json({ message: 'Registration successful', data });
   } catch (err) {
     res.status(400).json({ error: err.message });

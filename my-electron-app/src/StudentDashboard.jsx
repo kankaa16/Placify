@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import './sdashboard.css';
+import NotificationBell from './NotificationBell.jsx';
 import { useAuth } from '../contexts/AuthContext';
 import {
   BookOpen,
@@ -66,7 +67,7 @@ const StudentDashboard = () => {
       colorClass: 'card-purple',
       iconClass: 'icon-purple',
       coming: false,
-      route: '/analytics'
+      route: '/placement-analytics'
     },
     {
       id: 'interview',
@@ -108,14 +109,7 @@ const StudentDashboard = () => {
               <User style={{ width: 20, height: 20 }} />
             </motion.div>
 
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              className="circle-btn"
-              onClick={() => navigate('/settings')}
-              title="Settings"
-            >
-              <Settings style={{ width: 20, height: 20 }} />
-            </motion.div>
+  
 
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -260,6 +254,7 @@ const StudentDashboard = () => {
             ))}
           </div>
         </motion.div>
+        <NotificationBell />
       </main>
     </div>
   );

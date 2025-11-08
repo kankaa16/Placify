@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import UserModel from '../models/usermodel.js';
 import Student from '../classes/Student.js';
 import Admin from '../classes/Admin.js';
+import Application from '../models/Application.js';
 
 const JWT_SECRET = process.env.JWT_SECRET || "secretkeyxyz";
 
@@ -39,6 +40,17 @@ export const registerUser = async (data) => {
 
   const savedUser = await user.save();
   const token = generateToken(savedUser);
+  if (savedUser.role === "student") {
+    try {
+      await Application.create({
+        student: savedUser._id,
+        company: null,
+        status: "applied"
+      });
+    } catch (err) {
+      console.error("⚠️ Failed to create application:", err.message);
+    }
+  }
   return { user: savedUser, token };
 };
 
