@@ -27,7 +27,10 @@ const PlacementOfficerDashboard = () => {
     { id: 'students', title: 'Student Management', description: 'View and manage student profiles and readiness', icon: Users, colorClass: 'card-blue', coming: false },
     { id: 'managecompanies', title: 'Company Data', description: 'Manage company placement statistics', icon: Building2, colorClass: 'card-green', coming: false },
     { id: 'analytics', title: 'Placement Analytics', description: 'View comprehensive placement insights', icon: TrendingUp, colorClass: 'card-purple', coming: false },
-    { id: 'reports', title: 'Generate Reports', description: 'Create placement reports and statistics', icon: FileText, colorClass: 'card-yellow', coming: true }
+    { id: 'reports', title: 'Generate Reports', description: 'Create placement reports and statistics', icon: FileText, colorClass: 'card-yellow', coming: true },
+    { id: 'offers', title: 'Approved Offers', description: 'View all verified offers and placement records', icon: FileText, colorClass: 'card-green', coming: false },
+    {id:'verify', title:'Verify Offer Letters', description: 'Verify and approve offer letters for maintaining placement stats up-to-date', icon:FileText, colorClass:'card-blue', coming:false},
+
   ];
 
   const quickStats = [
@@ -41,6 +44,8 @@ const PlacementOfficerDashboard = () => {
     if (id === 'managecompanies') navigate('/manage-companies');
     if (id === 'students') navigate('/student-management');
     if (id === 'analytics') navigate('/analytics');
+    if (id === 'offers') navigate('/approved-offers');
+    if (id === 'verify') navigate('/verify-offers');
   };
 
   return (

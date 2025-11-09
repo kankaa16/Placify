@@ -8,6 +8,7 @@ import Login from './Login.jsx';
 import Register from './Register.jsx';
 import StudentDashboard from './StudentDashboard.jsx';
 import PlacementOfficerDashboard from './PlacementOfficerDashboard.jsx';
+import StudentOfferUpload from './StudentOfferUpload.jsx';
 import ProfilePage from './ProfilePage.jsx';
 import LoadingSpinner from '../components/LoadingSpinner.jsx';
 import ResumeUpload from './ResumeUpload.jsx';
@@ -19,7 +20,8 @@ import ProfileStats from '../components/ProfileStats.jsx';
 import PlacementAnalytics from './PlacementAnalytics.jsx';
 import AdminStudentList from './AdminStudentList.jsx';
 import StudentProfile from './StudentProfile.jsx';
-
+import ApprovedOffers from './ApprovedOffers.jsx';
+import AdminOfferVerification from './AdminOfferVerification.jsx';
 
 const ScorecardsWrapper = () => {
   const { user } = useAuth();
@@ -80,6 +82,9 @@ function AppContent() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
 
+
+<Route path="/upload-offer" element={<StudentOfferUpload applicationId/>} />
+
           {/* Protected routes */}
           <Route
             path="/student-dashboard"
@@ -119,6 +124,9 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="/approved-offers" element={<ApprovedOffers />} />
+<Route path="/verify-offers" element={<AdminOfferVerification />} />
 
 <Route
   path="/add-company"

@@ -5,6 +5,7 @@ const applicationSchema = new mongoose.Schema(
   {
     student: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
     company: { type: mongoose.Schema.Types.ObjectId, ref: "Company", required: false },
+    companyName:{type:String},
     status: {
       type: String,
       enum: [

@@ -12,7 +12,8 @@ import {
   MessageSquare,
   LogOut,
   User,
-  Settings
+  Settings,
+  FileText
 } from 'lucide-react';
 
 const StudentDashboard = () => {
@@ -109,6 +110,14 @@ const StudentDashboard = () => {
               <User style={{ width: 20, height: 20 }} />
             </motion.div>
 
+<motion.div
+  whileHover={{ scale: 1.05 }}
+  className="circle-btn"
+  onClick={() => navigate('/upload-offer')}
+  title="Upload Offer Letter"
+>
+  <FileText style={{ width: 20, height: 20 }} />
+</motion.div>
   
 
             <motion.div

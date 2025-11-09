@@ -2,7 +2,22 @@ import express from "express";
 import verifyToken from "../middlewares/verifyToken.js";
 import Application from "../models/Application.js";
 import Notification from '../models/notificationmodel.js';
+import PlacementStat from "../models/placementStatsModel.js";
+import multer from "multer";
+import { v2 as cloudinary } from "cloudinary";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
+import User from "../models/usermodel.js"
+
+
+import streamifier from "streamifier";
+
 const router = express.Router();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 //fetch all students 
 router.get("/me", verifyToken, async (req, res) => {
@@ -17,7 +32,7 @@ router.get("/me", verifyToken, async (req, res) => {
   }
 });
 
-// Student marks themselves as selected after final round
+
 // ADMIN shortlists student for next interview round
 router.patch("/:id/mark-shortlisted", verifyToken, async (req, res) => {
   if (req.user.role !== "admin")
@@ -49,10 +64,6 @@ router.patch("/:id/mark-shortlisted", verifyToken, async (req, res) => {
   }
 });
 
-
-// ======================
-// ADMIN ROUTES
-// ======================
 
 // Admin fetches all pending selections for verification
 router.get("/pending-verification", verifyToken, async (req, res) => {
@@ -110,7 +121,7 @@ router.patch("/:id/send-invite", verifyToken, async (req, res) => {
       { new: true }
     ).populate("student", "fName lName emailID");
 
-    // ✅ create a new notification in DB for that student
+    //  create a new notification in DB for that student
     await Notification.create({
       recipient: app.student._id,
       title: "Interview Invitation",
@@ -143,54 +154,87 @@ router.patch("/:id/accept-invite", verifyToken, async (req, res) => {
   }
 });
 
+const storage = new CloudinaryStorage({
+  cloudinary,
+  params: async (req, file) => {
+    const isPdf = file.mimetype === "application/pdf";
+
+    return {
+      folder: "offerLetters",
+      resource_type: isPdf ? "raw" : "image",
+      allowed_formats: ["pdf", "jpg", "jpeg", "png"],
+    };
+  },
+});
+
+
+const upload = multer({ storage: multer.memoryStorage() });
 // STUDENT uploads offer letter
-router.patch("/:id/upload-offer", verifyToken, async (req, res) => {
+router.patch("/:id/upload-offer", verifyToken, upload.single("offerLetter"), async (req, res) => {
   try {
-    const { offeredRole, offeredCTC, offerLetterUrl, offerNote } = req.body;
-    const app = await Application.findById(req.params.id);
-    if (String(app.student) !== req.user.id)
+    const { companyName, offeredRole, offeredCTC, offerNote } = req.body;
+    const admin = await User.findOne({ role: "admin" });
+    const app = await Application.findById(req.params.id).populate("student", "fName lName emailID");
+
+    if (!app) return res.status(404).json({ error: "Application not found" });
+    if (String(app.student._id) !== req.user.id)
       return res.status(403).json({ error: "Unauthorized" });
 
-    app.status = "offer_uploaded";
+    if (!req.file) return res.status(400).json({ error: "No file uploaded" });
+
+    const isPdf = req.file.mimetype === "application/pdf";
+
+    const uploadResult = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        {
+          folder: "offerLetters",
+          resource_type: isPdf ? "raw" : "image",
+          type: "upload",
+          access_mode: "public",
+          use_filename: true,
+          public_id: `${Date.now()}_${req.file.originalname.replace(/\s+/g, "_")}`,
+          format: isPdf ? "pdf" : undefined,
+        },
+        (error, result) => {
+          if (error) reject(error);
+          else resolve(result);
+        }
+      );
+      streamifier.createReadStream(req.file.buffer).pipe(stream);
+    });
+
+    app.companyName = companyName;
     app.offeredRole = offeredRole;
     app.offeredCTC = offeredCTC;
-    app.offerLetterUrl = offerLetterUrl;
     app.offerNote = offerNote;
+    app.offerLetterUrl = uploadResult.secure_url; // ✅ store full link
+    app.status = "offer_uploaded";
     app.uploadedAt = new Date();
-
     await app.save();
-    res.json({ message: "Offer uploaded successfully", app });
-  } catch (err) {
-    res.status(500).json({ error: "Upload failed" });
-  }
-});
 
-// ADMIN verifies final offer
-router.patch("/:id/verify-offer", verifyToken, async (req, res) => {
-  if (req.user.role !== "admin")
-    return res.status(403).json({ error: "Unauthorized" });
+    await Notification.create({
+      recipient: app.student._id,
+      title: "Offer Uploaded",
+      message: `Offer for ${offeredRole} uploaded successfully.`,
+      type: "offer",
+    });
 
-  try {
-    const { action } = req.body;
-    const app = await Application.findById(req.params.id);
-
-    if (action === "approve") {
-      app.status = "final_verified";
-      app.verifiedAt = new Date();
-    } else if (action === "reject") {
-      app.status = "interview_accepted";
+    if (admin) {
+      await Notification.create({
+        recipient: admin._id,
+        title: "New Offer Uploaded",
+        message: `${app.student.fName} ${app.student.lName} uploaded offer for ${companyName} (${offeredCTC} LPA).`,
+        type: "offer",
+      });
     }
 
-    await app.save();
-    res.json({ message: `Offer ${action}d`, app });
+    res.json({ message: "Offer uploaded successfully", app });
   } catch (err) {
-    res.status(500).json({ error: "Verification failed" });
+    console.error("Upload failed:", err);
+    res.status(500).json({ error: "Server error during upload" });
   }
 });
-
-// --- Admin actions using student ID directly ---
-
-// Mark student as shortlisted (no need for app ID)
+// Mark student as shortlisted 
 router.patch("/by-student/:studentId/send-invite", verifyToken, async (req, res) => {
   if (req.user.role !== "admin")
     return res.status(403).json({ error: "Unauthorized" });
@@ -227,7 +271,7 @@ router.patch("/by-student/:studentId/send-invite", verifyToken, async (req, res)
 
 
 
-// Send interview invite (by student)
+// Send interview invite
 router.patch("/by-student/:studentId/send-invite", verifyToken, async (req, res) => {
   if (req.user.role !== "admin")
     return res.status(403).json({ error: "Unauthorized" });
@@ -253,6 +297,62 @@ router.patch("/by-student/:studentId/send-invite", verifyToken, async (req, res)
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Failed to send invite" });
+  }
+});
+
+
+// Admin verifies uploaded offer letter
+router.patch("/:id/verify-offer", verifyToken, async (req, res) => {
+  try {
+    if (req.user.role !== "admin")
+      return res.status(403).json({ error: "Unauthorized" });
+
+    const { action } = req.body;
+    const app = await Application.findById(req.params.id)
+      .populate("student", "fName lName emailID dept")
+      .populate("company", "name");
+
+    if (!app) return res.status(404).json({ error: "Application not found" });
+
+    if (action === "approve") {
+      app.status = "final_verified";
+      app.verifiedAt = new Date();
+      await app.save();
+
+      // ✅ Automatically add record to PlacementStats
+      await PlacementStat.create({
+        student: app.student._id,
+        companyName: app.companyName || app.company?.name || "Unknown Company",
+        offeredRole: app.offeredRole,
+        offeredCTC: app.offeredCTC,
+        verifiedAt: new Date(),
+      });
+    } else if (action === "reject") {
+      app.status = "interview_accepted";
+      await app.save();
+    } else {
+      return res.status(400).json({ error: "Invalid action" });
+    }
+
+    res.json({ message: `Offer ${action}d successfully`, app });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Offer verification failed" });
+  }
+});
+
+router.get("/offers/pending", verifyToken, async (req, res) => {
+  try {
+    if (req.user.role !== "admin")
+      return res.status(403).json({ error: "Unauthorized" });
+
+    const offers = await Application.find({ status: "offer_uploaded" })
+      .populate("student", "fName lName emailID dept")
+      .sort({ uploadedAt: -1 });
+
+    res.json(offers);
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch offers" });
   }
 });
 
