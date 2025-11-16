@@ -1,15 +1,23 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom'; // Assuming you use react-router
-import './AIInterview.css';
+import './AiInterviewLandingpage.css'; // Import corresponding CSS
 
 const AIInterviewLanding = () => {
+    
     const navigate = useNavigate();
 
     // Placeholder function to navigate to the session
-    const startInterview = () => {
-        console.log("Navigating to interview session...");
-        navigate('/ai-mock-interview-session'); // Update this path as per your router setup
-    };
+   const startInterview = () => {
+        console.log("Navigating to interview session...");
+        
+        // 1. Create a new, unique session ID
+        // This is a simple way to get a random ID. 
+        // You might replace this later by calling your API.
+        const newSessionId = `session_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`;
+
+        // 2. Navigate to the CORRECT path with the new ID
+        navigate(`/ai-interview/session/${newSessionId}`);
+    };
 
     return (
         <div className="interview-container landing-page">

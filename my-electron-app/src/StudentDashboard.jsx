@@ -76,8 +76,8 @@ const StudentDashboard = () => {
       icon: MessageSquare,
       colorClass: 'card-red',
       iconClass: 'icon-red',
-      coming: true,
-      route: null
+      coming: false,
+      route: '/ai-interview' 
     }
   ];
 

@@ -1,0 +1,175 @@
+/* --- AIInterviewLanding.js Styles --- */
+
+/* Match the setup-page container style for a centered, full-page look */
+.interview-container.landing-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    box-sizing: border-box;
+    /* Use the same subtle background gradient for consistency */
+    background: radial-gradient(circle, #1F2937, #111827);
+    text-align: center;
+    overflow-y: auto; /* Allow scrolling if content is too large */
+}
+
+.landing-content {
+    max-width: 900px;
+    width: 100%;
+    /* Apply the same fade-in animation */
+    animation: fadeIn 0.8s ease-out; 
+    padding: 2rem;
+    background-color: #1F2937; /* Slightly lighter box for main content */
+    border-radius: 1rem;
+    border: 1px solid #374151; /* Subtle border */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Header Section */
+.landing-header {
+    margin-bottom: 3rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #374151;
+}
+
+.landing-title {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #3B82F6; /* Use the primary blue color for the main title */
+    margin-bottom: 0.75rem;
+}
+
+.landing-subtitle {
+    font-size: 1.2rem;
+    color: #9CA3AF;
+    line-height: 1.6;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* Features Grid Section */
+.features-grid {
+    display: grid;
+    /* Create a responsive grid: 2 columns on desktop, 1 on mobile */
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.feature-card {
+    background-color: #111827; /* Darkest background for card */
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid #374151;
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px); /* Subtle lift effect */
+    box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15); /* Blue shadow on hover */
+    border-color: #3B82F6;
+}
+
+.feature-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #FFFFFF;
+    margin-bottom: 0.75rem;
+    position: relative;
+    padding-left: 1.5rem;
+}
+
+/* Add a subtle blue dot/marker to the feature title */
+.feature-title::before {
+    content: '•';
+    color: #3B82F6;
+    font-size: 1.5rem;
+    line-height: 1;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.feature-description {
+    font-size: 1rem;
+    color: #D1D5DB;
+    line-height: 1.5;
+}
+
+/* Footer Section */
+.landing-footer {
+    padding-top: 2rem;
+}
+
+.readiness-check {
+    font-size: 1.2rem;
+    color: #E5E7EB;
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+}
+
+/* Start Button - Re-use the large button style but without the "large" class suffix */
+.start-interview-btn {
+    background-color: #3B82F6;
+    color: #FFFFFF;
+    font-size: 1.35rem;
+    font-weight: 500;
+    padding: 1.2rem 4rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+}
+
+.start-interview-btn:hover {
+    background-color: #2563EB;
+    transform: scale(1.03);
+    box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+}
+
+.start-interview-btn:active {
+    transform: scale(1.0);
+}
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 950px) {
+    .features-grid {
+        /* Reduce grid columns on smaller screens */
+        grid-template-columns: 1fr;
+        max-width: 450px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .landing-title {
+        font-size: 2.5rem;
+    }
+
+    .landing-subtitle {
+        font-size: 1.1rem;
+    }
+
+    .start-interview-btn {
+        font-size: 1.2rem;
+        padding: 1rem 3rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .interview-container.landing-page {
+        padding: 1rem;
+    }
+    .landing-content {
+        padding: 1.5rem 1rem;
+    }
+    .landing-title {
+        font-size: 2rem;
+    }
+    .landing-header {
+        margin-bottom: 2rem;
+    }
+}

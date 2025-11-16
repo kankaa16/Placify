@@ -11,6 +11,11 @@ import resumeRoutes from "./routes/resumeroute.js";
 import scoreroute from "./routes/scoreroute.js";
 import User from "./models/usermodel.js";
 import analyticsRoute from "./routes/analyticsRoutes.js";
+// 1. IMPORT YOUR ROUTE FILES
+import mockInterviewRoutes from './routes/mockinterviewroutes.js';
+import speechRoutes from './routes/speechroute.js';
+import { initSpeechModel } from './controllers/speechController.js';
+// (Import your other route files here too)
 const app = express();
 
 // connect database
@@ -29,6 +34,8 @@ app.use("/api/auth", authroute);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/score", scoreroute);
 app.use("/api/analytics", analyticsRoute);
+app.use('/api/mock-interview', mockInterviewRoutes);
+app.use('/api/speech', speechRoutes);
 
 
 // Fetch user profile
@@ -378,4 +385,8 @@ app.get("/api/leetcode/:username", async (req, res) => {
 
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  // Load the AI models now that the server is running
+  initSpeechModel(); 
+});

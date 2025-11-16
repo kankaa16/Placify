@@ -14,6 +14,9 @@ import ResumeUpload from './ResumeUpload.jsx';
 import Scorecards from './Scorecards.jsx';
 import ProfileStats from '../components/ProfileStats.jsx';
 import PlacementAnalytics from './PlacementAnalytics';
+// CORRECT IMPORTS
+import AIInterviewLanding from '../components/AIInterviewLanding.jsx';
+import AIMockInterviewSession from "../components/AIInterviewSession.jsx";
 
 const ScorecardsWrapper = () => {
   const { user } = useAuth();
@@ -67,7 +70,7 @@ function AppContent() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.4 }}
-        className="min-h-screen"
+        // className="min-h-screen"
       >
         <Routes>
           {/* Public routes */}
@@ -111,6 +114,23 @@ function AppContent() {
   }
 />
 
+// CORRECT ROUTES
+<Route
+  path="/ai-interview"
+  element={
+    <ProtectedRoute allowedRoles={['student']}>
+      <AIInterviewLanding />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/ai-interview/session/:sessionId"
+  element={
+    <ProtectedRoute allowedRoles={['student']}>
+      <AIMockInterviewSession />
+    </ProtectedRoute>
+  }
+/>
 
 
 
@@ -170,7 +190,7 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-background-primary text-text-primary">
+      <div className="bg-background-primary text-text-primary">
         <AppContent />
 
         <Toaster

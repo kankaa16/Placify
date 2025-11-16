@@ -1,5 +1,5 @@
 /* --- Global Styles & Font --- */
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Fira+Code&display=swap');
 
 body {
     background-color: #111827;
@@ -8,41 +8,11 @@ body {
     margin: 0;
     padding: 0;
     overflow: hidden; /* Prevent body scrolling */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-/* --- Landing Page Specific Styles --- */
-.landing-page {
-    background: radial-gradient(circle, #1F2937, #111827);
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 2rem;
-    box-sizing: border-box;
-}
-
-.landing-content {
-    max-width: 900px;
-    text-align: center;
-    animation: fadeIn 1s ease-in-out;
-}
-
-.landing-header { margin-bottom: 3rem; }
-.landing-title { font-size: 3.5rem; font-weight: 700; color: #FFFFFF; margin-bottom: 1rem; }
-.landing-subtitle { font-size: 1.25rem; color: #9CA3AF; max-width: 600px; margin: 0 auto; line-height: 1.6; }
-
-.features-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-bottom: 3rem; }
-.feature-card { background-color: rgba(31, 41, 55, 0.5); padding: 2rem; border-radius: 1rem; border: 1px solid #374151; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-.feature-card:hover { transform: translateY(-5px); box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2); }
-.feature-title { font-size: 1.5rem; font-weight: 500; color: #3B82F6; margin-bottom: 0.75rem; }
-.feature-description { color: #D1D5DB; line-height: 1.5; }
-
-.readiness-check { font-size: 1.2rem; margin-bottom: 1rem; color: #9CA3AF; }
-.start-interview-btn { background-color: #3B82F6; color: #FFFFFF; font-size: 1.1rem; font-weight: 500; padding: 1rem 3rem; border: none; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.3s ease, transform 0.3s ease; }
-.start-interview-btn:hover { background-color: #2563EB; transform: scale(1.05); }
-
-
-/* --- Setup Page Styles (Copied from previous JSX) --- */
+/* --- Setup Page Styles --- */
 .interview-container.setup-page {
     display: flex;
     justify-content: center;
@@ -76,23 +46,40 @@ body {
 .interview-setup-options.large-setup {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem; /* More spacing */
-    margin: 2rem auto; /* Center horizontally */
+    gap: 1.5rem; 
+    margin: 2rem auto; 
     width: 90%;
     max-width: 400px;
     color: #D1D5DB;
-    text-align: left; /* Align labels left */
+    text-align: left; 
 }
 
 .interview-setup-options.large-setup label {
-    font-size: 1rem; /* Larger labels */
+    font-size: 1rem; 
 }
 .interview-setup-options.large-setup select {
-    padding: 0.9rem 1.2rem; /* Larger selects */
+    padding: 0.9rem 1.2rem; 
     font-size: 1.1rem;
     margin-top: 0.5rem;
-    /* Inherit base select styles */
+    width: 100%;
+    border-radius: 0.5rem; 
+    border: 1px solid #374151; 
+    background-color: #2a2a3e; 
+    color: #E5E7EB; 
+    cursor: pointer; 
+    appearance: none; 
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%239CA3AF' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); 
+    background-repeat: no-repeat; 
+    background-position: right 0.75rem center; 
+    background-size: 1.2em; 
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+.interview-setup-options.large-setup select:focus { 
+    outline: none; 
+    border-color: #3B82F6; 
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); 
+}
+
 
 .start-interview-btn.large-start-btn {
     background-color: #3B82F6;
@@ -104,7 +91,7 @@ body {
     border-radius: 0.5rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-top: 1rem; /* Space above button */
+    margin-top: 1rem; 
 }
 .start-interview-btn.large-start-btn:hover {
     background-color: #2563EB;
@@ -141,7 +128,7 @@ body {
     width: 100%; display: flex; align-items: center;
     background-color: #1F2937; border: 1px solid #374151;
     border-radius: 0.75rem; padding: 0.75rem 1.5rem;
-    margin-bottom: 1rem; box-sizing: border-box; flex-shrink: 0; /* Prevent shrinking */
+    margin-bottom: 1rem; box-sizing: border-box; flex-shrink: 0;
 }
 .back-btn { background: none; color: #E5E7EB; border: none; font-size: 1rem; font-weight: 500; cursor: pointer; transition: color 0.2s, background-color 0.2s; padding: 5px 10px; border-radius: 5px; margin-right: auto; }
 .back-btn:hover { color: #3B82F6; background-color: #374151; }
@@ -150,109 +137,77 @@ body {
 
 /* --- Split Screen Layout --- */
 .split-screen {
-    display: flex; /* This will be overridden by SplitPane */
     width: 100%;
     flex-grow: 1;
-    gap: 1rem; /* SplitPane doesn't use gap, adjust resizer margin if needed */
     overflow: hidden;
     min-height: 0;
 }
 
 .video-panel {
-    /* flex: 1; -- SplitPane handles sizing */
     background-color: #1F2937;
-    border-radius: 1rem; /* Rounded corners for the main panels */
-    display: flex; /* Make sure it's a flex container */
-    flex-direction: column; /* Stack SplitPane vertically */
-    /* padding: 1rem; -- Padding moved to pane-content */
+    border-radius: 1rem; 
+    display: flex; 
+    flex-direction: column; 
     border: 1px solid #374151;
     box-sizing: border-box;
     min-height: 0;
-    overflow: hidden; /* This is key for rounded corners on children */
-    position: relative; /* Needed for SplitPane resizer */
+    overflow: hidden; 
+    position: relative; 
 }
 
 /* --- react-split-pane Styles --- */
-/* General SplitPane container styling */
 .SplitPane {
     position: relative !important;
     height: 100%;
     overflow: hidden;
-    display: flex; /* Ensure flex behavior */
+    display: flex; 
 }
 .SplitPane.horizontal { flex-direction: column; }
 .SplitPane.vertical { flex-direction: row; }
 
-/* --- NEW: Hide Resizers & Lock Panes --- */
+
+/* --- Styles to hide the resizer bar --- */
 .Resizer {
-    display: none !important; /* Hide the resizer component */
-    pointer-events: none; /* Disable mouse events */
+    background: #111827; /* Match page background */
+    opacity: 1;
+    z-index: 1;
+    box-sizing: border-box;
+    background-clip: padding-box;
+    flex-shrink: 0; 
+    pointer-events: none; /* Disables resizing */
 }
-
-/* Lock the main vertical split */
-.main-split-pane > .Pane1 {
-    width: 50% !important; /* Lock to 50% */
-    min-width: 50% !important;
-    max-width: 50% !important;
-    padding-right: 0.5rem; /* Add spacing */
+.Resizer.vertical {
+    width: 1rem; /* This is the gap between panels */
+    cursor: default !important;
 }
-.main-split-pane > .Pane2 {
-    width: 50% !important; /* Lock to 50% */
-    min-width: 50% !important;
-    max-width: 50% !important;
-    padding-left: 0.5rem; /* Add spacing */
+.Resizer.horizontal {
+    height: 1rem; /* This is the gap between panels */
+    cursor: default !important;
+    width: 100%; 
 }
-
-/* Lock the user panel horizontal split */
-.user-panel .SplitPane > .Pane1 {
-    height: 60% !important; /* Lock to 60% */
-    min-height: 60% !important;
-    max-height: 60% !important;
-    padding-bottom: 0.5rem; /* Add spacing */
-}
-.user-panel .SplitPane > .Pane2 {
-    height: 40% !important; /* Lock to 40% */
-    min-height: 40% !important;
-    max-height: 40% !important;
-    padding-top: 0.5rem; /* Add spacing */
-}
-
-/* Lock the AI panel horizontal split */
-.ai-panel .SplitPane > .Pane1 {
-    height: 40% !important; /* Lock to 40% */
-    min-height: 40% !important;
-    max-height: 40% !important;
-    padding-bottom: 0.5rem; /* Add spacing */
-}
-.ai-panel .SplitPane > .Pane2 {
-    height: 60% !important; /* Lock to 60% */
-    min-height: 60% !important;
-    max-height: 60% !important;
-    padding-top: 0.5rem; /* Add spacing */
-}
-/* --- End of Resizer Lock --- */
+/* --- END OF RESIZER STYLES --- */
 
 
 /* --- Styles for Content within Panes --- */
 .pane-content {
-    overflow: auto; /* Allow scrolling within each pane */
+    overflow: auto; 
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 0.75rem; /* Add padding inside panes */
+    padding: 0.75rem; 
     box-sizing: border-box;
-    min-height: 0; /* Allow shrinking */
-    min-width: 0; /* Allow shrinking */
+    min-height: 0; 
+    min-width: 0; 
 }
-.pane-content > * { flex-shrink: 0; } /* Prevent direct children shrinking oddly */
+.pane-content > * { flex-shrink: 0; } 
 
 .video-pane, .avatar-pane { justify-content: center; align-items: center; padding: 0.5rem; }
-.transcript-pane, .question-pane { padding: 0.5rem; } /* Padding for boxes inside */
+.transcript-pane, .question-pane { padding: 0.5rem; } 
 
 
 /* Video Feed/Placeholder */
-.video-feed-container, .video-placeholder-container {
-    background-color: #111827; border-radius: 0.5rem; /* Slightly smaller radius */
+.video-feed-container {
+    background-color: #111827; border-radius: 0.5rem; 
     overflow: hidden; position: relative;
     width: 100%; height: 100%;
     display: flex; justify-content: center; align-items: center;
@@ -261,16 +216,10 @@ body {
 .video-feed { display: block; width: 100%; height: 100%; object-fit: cover; }
 .video-placeholder { display: flex; flex-direction: column; justify-content: center; align-items: center; width: 90%; max-width: 400px; color: #9CA3AF; text-align: center; padding: 1rem; }
 .video-placeholder p { margin-bottom: 1.5rem; font-size: 1.1rem; }
-/* Dropdown styles needed here if not global */
-.interview-setup-options { display: flex; flex-direction: column; gap: 1rem; margin: 1rem 0; width: 100%; max-width: 350px; color: #D1D5DB; }
-.interview-setup-options label { display: flex; flex-direction: column; align-items: flex-start; font-size: 0.9rem; font-weight: 500; width: 100%; }
-.interview-setup-options select { width: 100%; padding: 0.75rem 1rem; margin-top: 0.4rem; border-radius: 0.5rem; border: 1px solid #374151; background-color: #2a2a3e; color: #E5E7EB; font-size: 1rem; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='%239CA3AF' viewBox='0 0 24 24' width='24' height='24'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0.75rem center; background-size: 1.2em; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
-.interview-setup-options select:focus { outline: none; border-color: #3B82F6; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3); }
-.start-btn { margin-top: 1.5rem; /* Add space above start button */ }
 
 
 /* AI Avatar */
-.ai-avatar-container { background-color: transparent; /* Make container transparent */ border-radius: 0.75rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; width: 100%; height: 100%; box-sizing: border-box; }
+.ai-avatar-container { background-color: transparent; border-radius: 0.75rem; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1rem; width: 100%; height: 100%; box-sizing: border-box; }
 .ai-avatar { width: 90px; height: 90px; border-radius: 50%; border: 2px solid #3B82F6; object-fit: cover; margin-bottom: 0.5rem; background-color: #1F2937; animation: pulseGlow 3s infinite ease-in-out; }
 .ai-name { color: #E5E7EB; font-weight: 500; font-size: 0.9rem; letter-spacing: 0.5px; margin-top: 0.3rem; }
 
@@ -279,13 +228,13 @@ body {
 
 /* Transcript & Question Boxes */
 .transcript-box, .question-display-box {
-    min-height: 80px; /* Base min-height */
+    min-height: 80px; 
     flex-grow: 1;
     width: 100%;
     background-color: #111827;
     border-radius: 0.5rem;
-    padding: 1rem; /* Adjust padding */
-    overflow-y: auto;
+    padding: 1rem; 
+    overflow: hidden; /* Changed from auto */
     border: 1px solid #374151;
     box-sizing: border-box;
     display: flex;
@@ -293,50 +242,155 @@ body {
     margin-top: 0;
 }
 
-.question-display-box {
-    justify-content: center; /* Center question vertically */
-    align-items: center; /* Center horizontally */
-    text-align: center;
-    position: relative; /* For speaker button positioning */
+/* Make .transcript-box fill its pane */
+.transcript-pane > .transcript-box {
+    height: 100%;
 }
 
-/* Text Area Style */
+.question-display-box {
+    justify-content: center; 
+    align-items: center; 
+    text-align: center;
+    position: relative; 
+}
+
+/* --- Editor Toggle Tabs --- */
+.editor-toggle {
+    display: flex;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #374151;
+}
+.editor-toggle-btn {
+    background: none;
+    border: none;
+    color: #9CA3AF; /* Inactive tab color */
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+}
+.editor-toggle-btn.active {
+    color: #3B82F6; /* Active tab color */
+    border-bottom-color: #3B82F6;
+}
+.editor-toggle-btn:hover {
+    color: #E5E7EB;
+}
+
+
+/* --- Plain Text Editor Style --- */
 .transcript-textarea {
-  flex-grow: 1; /* Make textarea fill the transcript box */
+  flex-grow: 1; /* Make it fill the transcript-box */
   width: 100%;
   padding: 0.75rem;
-  margin-top: 0.5rem;
+  margin: 0;
   border-radius: 0.5rem;
   border: 1px solid #374151;
   background-color: #2a2a3e;
   color: #E5E7EB;
   font-size: 1rem;
   line-height: 1.6;
-  resize: none; /* Disable manual resizing */
-  font-family: inherit;
+  resize: none; 
+  font-family: 'Roboto', sans-serif; /* Use standard font */
   box-sizing: border-box;
-  caret-color: #3B82F6; /* Visible cursor */
-  min-height: 80px; /* Ensure a minimum size */
+  caret-color: #3B82F6; 
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
-
 .transcript-textarea:focus {
   outline: none;
   border-color: #3B82F6;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
 }
+.transcript-textarea::placeholder {
+  color: #6B7280;
+  font-style: italic;
+}
 
-.transcript-textarea::placeholder { color: #6B7280; font-style: italic; }
+
+/* --- Styles for the Aesthetic Code Editor --- */
+
+/* This is the wrapper we added in the JSX */
+.editor-container {
+    flex-grow: 1; /* Make it fill the transcript-box */
+    position: relative;
+    border-radius: 0.5rem;
+    border: 1px solid #374151;
+    overflow: auto; /* This is important for scrolling */
+    background: #2d2d2d; /* This is the 'prism-tomorrow' background color */
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.editor-container:focus-within {
+  outline: none;
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+/* This is the class given to the <Editor> component */
+.code-editor-area {
+    /* The imported 'prism-tomorrow.css' handles all text colors */
+    background: none !important; 
+    caret-color: #3B82F6 !important; /* Blue cursor */
+    /* This makes the placeholder text styled like a normal textarea */
+    font-family: 'Roboto', sans-serif;
+}
+
+/* This targets the <textarea> inside the editor */
+.code-editor-area > textarea {
+    outline: none !important; /* Remove focus ring */
+    font-family: 'Fira Code', 'Courier New', monospace !important;
+}
+
+/* This targets the <pre> tag inside the editor */
+.code-editor-area > pre {
+    outline: none !important;
+    font-family: 'Fira Code', 'Courier New', monospace !important;
+}
+
+/* Style the placeholder text */
+.code-editor-area > textarea::placeholder {
+    color: #6B7280;
+    font-style: italic;
+    font-family: 'Roboto', sans-serif; /* Use normal font for placeholder */
+}
+
+/* --- AESTHETIC: Custom Scrollbar for Webkit (Chrome/Electron) --- */
+.editor-container::-webkit-scrollbar,
+.transcript-textarea::-webkit-scrollbar,
+.pane-content::-webkit-scrollbar {
+  width: 10px;
+}
+.editor-container::-webkit-scrollbar-track,
+.transcript-textarea::-webkit-scrollbar-track,
+.pane-content::-webkit-scrollbar-track {
+  background: #1F2937; /* Dark track */
+  border-radius: 10px;
+}
+.editor-container::-webkit-scrollbar-thumb,
+.transcript-textarea::-webkit-scrollbar-thumb,
+.pane-content::-webkit-scrollbar-thumb {
+  background-color: #4B5563; /* Gray thumb */
+  border-radius: 10px;
+  border: 2px solid #1F2937; /* Creates padding around thumb */
+}
+.editor-container::-webkit-scrollbar-thumb:hover,
+.transcript-textarea::-webkit-scrollbar-thumb:hover,
+.pane-content::-webkit-scrollbar-thumb:hover {
+  background-color: #6B7280;
+}
+/* --- END OF AESTHETIC STYLES --- */
 
 
-.transcript-box p { margin: 0 0 10px 0; line-height: 1.5; color: #D1D5DB; }
-.transcript-box p strong { color: #E5E7EB; }
+.transcript-box p { margin: 0; line-height: 1.5; color: #D1D5DB; }
+.transcript-box p strong { color: #E5E7EB; margin-bottom: 0.5rem; display: inline-block; }
 .ai-feedback { font-style: italic; color: #9CA3AF; font-size: 0.9rem; margin-top: 0.5rem; padding-top: 0.5rem; flex-shrink: 0; }
 .model-status { border-top: 1px dashed #444; }
-.model-status.loading, .model-status.listening { color: #60A5FA; } /* Blue for loading/listening */
+.model-status.loading, .model-status.listening { color: #60A5FA; } 
 
 .error-feedback { color: #F87171; font-weight: 500; }
 
-.question-text { font-size: 1.2rem; line-height: 1.6; color: #F3F4F6; margin: 0; margin-bottom: 0.5rem; /* Space for button */ }
+.question-text { font-size: 1.2rem; line-height: 1.6; color: #F3F4F6; margin: 0; margin-bottom: 0.5rem; }
 
 /* Speaker Button Style */
 .speak-question-btn {
@@ -344,7 +398,7 @@ body {
     cursor: pointer; padding: 5px; border-radius: 50%;
     position: absolute; bottom: 10px; right: 10px;
     transition: color 0.2s, background-color 0.2s;
-    line-height: 0; /* Align icon better */
+    line-height: 0; 
 }
 .speak-question-btn:hover { color: #E5E7EB; background-color: rgba(55, 65, 81, 0.5); }
 .speak-question-btn:disabled { opacity: 0.4; cursor: not-allowed; background-color: transparent; }
@@ -361,7 +415,7 @@ body {
 .control-btn { background-color: #374151; color: #E5E7EB; padding: 0.6rem 1.2rem; border: none; border-radius: 0.5rem; cursor: pointer; font-weight: 500; font-size: 0.9rem; transition: background-color 0.2s, transform 0.1s; white-space: nowrap; }
 .control-btn:hover { background-color: #4B5563; }
 .control-btn:active { transform: scale(0.98); }
-.control-Dbtn:disabled { background-color: #2a2a3e; opacity: 0.6; cursor: not-allowed; transform: none; }
+.control-btn:disabled { background-color: #2a2a3e; opacity: 0.6; cursor: not-allowed; transform: none; }
 .control-btn.active { background-color: #EF4444; color: #FFFFFF; } /* Mic active */
 .control-btn.active:hover { background-color: #DC2626; }
 .submit-btn { background-color: #2563EB; color: white; } /* Submit button */

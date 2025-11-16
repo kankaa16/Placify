@@ -1,28 +1,34 @@
 :root {
-  --primary: #a78bfa;
-  --primary-dark: #7c3aed;
-  --bg-gradient: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
-  --text: #e5e7eb;
-  --text-muted: #9ca3af;
-  --error: #f87171;
+  --primary: #a78bfa;
+  --primary-dark: #7c3aed;
+  --bg-gradient: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  --text: #e5e7eb;
+  --text-muted: #9ca3af;
+  --error: #f87171;
 }
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-html, body, #root {
-  height: 100%;
-  width: 100%;
+html {
+  height: 100%;
 }
 
 body {
-  font-family: 'Poppins', system-ui, sans-serif;
-  background: var(--bg-gradient);   /* full screen gradient */
-  color: var(--text);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  /* We set a MINIMUM height, not a fixed height */
+  min-height: 100%; 
+  font-family: 'Poppins', system-ui, sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text);
+  /* We remove display:flex, justify-content, and align-items 
+     so the page is no longer stuck in the center. */
+}
+
+#root {
+  /* Let the root element be flexible */
+  min-height: 100vh;
+  width: 100%;
 }
