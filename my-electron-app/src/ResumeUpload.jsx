@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./Resume.css";
+console.log("Component loaded: ResumeUpload");
 
 function ATSCircle({ percent }) {
   const radius = 60;
@@ -51,7 +52,7 @@ function ATSCircle({ percent }) {
   );
 }
 
-export default function ResumeAnalyzer() {
+export default function ResumeUpload() {
   const [file, setFile] = useState(null);
   const [jobDesc, setJobDesc] = useState("");
   const [loading, setLoading] = useState(false);
@@ -66,37 +67,65 @@ export default function ResumeAnalyzer() {
   const handleFile = (e) => setFile(e.target.files?.[0] || null);
 
   const submit = async (e) => {
-    e.preventDefault();
-    if (!file) return alert("Upload a resume file");
+  e.preventDefault();
+  if (!file) return alert("Upload a resume file");
 
-    setLoading(true);
-    setResult(null);
+  setLoading(true);
+  setResult(null);
 
-    try {
-      const formData = new FormData();
-      formData.append("file", file);
-      formData.append("job_description", jobDesc || "");
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("job_description", jobDesc || "");
 
-      const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:5000/api/resume/upload", {
+    const res = await fetch("http://localhost:5000/api/resume/upload", {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+      body: formData
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Analysis failed");
+
+    // set resume results to UI
+    setResult(data.analysis || String(data));
+
+    // *** IMPORTANT ***
+    // we must parse sections AFTER setting result, so calculate again manually:
+    const safeText = data.analysis ? String(data.analysis) : "";
+    const mp = safeText.match(/Match Percentage[:\s]*([0-9]{1,3})\s*%/i);
+    const extractedScore = mp ? Math.min(100, Math.max(0, parseInt(mp[1], 10))) : 0;
+
+    // store only if score is not zero
+    if (extractedScore > 0) {
+      await fetch("http://localhost:5000/api/resume/save", {
         method: "POST",
         headers: {
-    Authorization: `Bearer ${token}`
-  },
-        body: formData
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          role: jobDesc || "Unknown role",
+          score: extractedScore,
+          matchedSkills: [],   // you can fill this later if needed
+          missingSkills: [],   // same
+          parsedData: data
+        })
       });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || "Analysis failed");
-      setResult(data.analysis || String(data));
-    } catch (err) {
-      console.error(err);
-      alert(err.message);
-    } finally {
-      setLoading(false);
     }
-  };
+
+  } catch (err) {
+    console.error(err);
+    alert(err.message);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const reset = () => {
     setFile(null);
@@ -104,6 +133,8 @@ export default function ResumeAnalyzer() {
     setResult(null);
     fileRef.current.value = null;
   };
+
+  
 
   const toggle = (key) => setCollapsed(prev => ({ ...prev, [key]: !prev[key] }));
 
@@ -130,6 +161,8 @@ ${rec ? `**Recommendations:**\n${rec[1].trim()}` : ""}
     return { matchText, missingText, thoughtsText, percentMatch, raw: rawAnalysis };
   };
 
+  
+
   const extractKeywords = (missingText) => {
     if (!missingText) return [];
     let cleaned = missingText.replace(/\d+\.\s*/g, ", ").replace(/\(.*?\)/g, "");
@@ -141,6 +174,8 @@ ${rec ? `**Recommendations:**\n${rec[1].trim()}` : ""}
   const missingTags = extractKeywords(sections.missingText);
 
   const prettyFileInfo = file ? `${file.name} · ${Math.round(file.size / 1024)} KB` : "no file chosen";
+
+  
 
   return (
     <div className="ra-wrap dark-theme">
@@ -166,7 +201,15 @@ ${rec ? `**Recommendations:**\n${rec[1].trim()}` : ""}
 
             <label className="field-label">Resume File</label>
             <div className="file-row">
-              <input ref={fileRef} type="file" accept=".pdf,.docx" onChange={handleFile} className="file-input" />
+              <input 
+  ref={fileRef}
+  type="file"
+  accept=".pdf,.docx"
+  onChange={handleFile}
+  className="file-input"
+  style={{ background: "white", color: "black", width:"200px", height:"40px" }}
+/>
+
               <div className="file-info">{prettyFileInfo}</div>
             </div>
             <div className="form-actions">
@@ -232,7 +275,8 @@ ${rec ? `**Recommendations:**\n${rec[1].trim()}` : ""}
 
       {/* Full-width Raw Analysis Card */}
       {result && (
-  <div className="card">
+  <div className="raw-wrapper">
+    <div className="card raw-analysis-card">
     <div className="card-head">
       <h3>Raw Analysis</h3>
       <button className="collapse-btn" onClick={() => toggle("raw")}>
@@ -273,11 +317,12 @@ ${rec ? `**Recommendations:**\n${rec[1].trim()}` : ""}
 </div>
 
   </div>
+  </div>
 
       )}
 
       <footer className="ra-footer">
-        <small>Powered by your local server</small>
+        <small>Powered by Placify</small>
       </footer>
     </div>
   );

@@ -55,7 +55,7 @@ const userSchema = new mongoose.Schema({
   leetcode: String,
   codeforces: String, 
   codechef: String,
-  hackerrank: String,
+  atcoder: String,
   other: [
     {
       platformName: String,

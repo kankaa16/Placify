@@ -1,0 +1,69 @@
+.rr-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #0f0f16;
+  padding: 40px;
+  color: #e6e6e6;
+  font-family: Inter, sans-serif;
+}
+
+.upload-box {
+  background: #1b1b29;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 35px;
+}
+
+.upload-box button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  background: #6e6cf2;
+  border: none;
+  color: white;
+}
+
+.rr-top {
+  display: flex;
+  gap: 25px;
+}
+
+.rr-left-box,
+.rr-right-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.rr-card {
+  background: #1c1c27;
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+}
+
+.rr-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.rr-badge {
+  background: #6e6cf2;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+.rr-bottom {
+  margin-top: 30px;
+}
+
+.rr-raw {
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 1.6;
+}

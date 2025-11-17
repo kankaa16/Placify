@@ -1,15 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./Scorecards.css";
 
-const platformColors = {
-  leetcode: "#FFA116",
-  codeforces: "#1F8ACB",
-  codechef: "#5E9EFF",
-  atcoder: "#FF6B6B",
-  github: "#6E5494"
+import leetIcon from "./assets/leetcode.svg";
+import cfIcon from "./assets/code-forces.svg";
+import ccIcon from "./assets/codechef.svg";
+import atIcon from "./assets/atcoder.svg";
+import ghIcon from "./assets/github-logo.svg";
+
+const icons = {
+  leetcode: leetIcon,
+  codeforces: cfIcon,
+  codechef: ccIcon,
+  atcoder: atIcon,
+  github: ghIcon
 };
 
-const Scorecards = () => {
+axios.defaults.headers.common["Authorization"] =
+  "Bearer " + localStorage.getItem("token");
+
+export default function Scorecards() {
+  const userId = localStorage.getItem("userId");
+
   const [handles, setHandles] = useState({
     leetcode: "",
     codeforces: "",
@@ -18,48 +30,95 @@ const Scorecards = () => {
     github: ""
   });
 
-  const renderCard = (platform) => (
-    <div className="card" key={platform}>
-      <div className="card-header">
-        <div className="card-icon" style={{ backgroundColor: platformColors[platform] }}>
-          {platform.charAt(0).toUpperCase()}
-        </div>
-        <h2>{platform.charAt(0).toUpperCase() + platform.slice(1)}</h2>
-      </div>
-    </div>
-  );
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    async function loadSaved() {
+      try {
+        const { data } = await axios.get(
+          `http://localhost:5000/api/score/${userId}`
+        );
+
+        const saved = data.socials || {};
+        setHandles(prev => ({ ...prev, ...saved }));
+
+        const newUser = Object.values(saved).every(v => !v);
+        setEditMode(newUser);
+      } catch {
+        setEditMode(true);
+      }
+      setLoading(false);
+    }
+
+    loadSaved();
+  }, []);
+
+  const saveHandles = async () => {
+    try {
+      await axios.post(
+        `http://localhost:5000/api/score/save-handles/${userId}`,
+        handles
+      );
+      setEditMode(false);
+    } catch (err) {
+      console.log("Save failed", err);
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
 
   return (
-    <div className="scorecards-container">
-      <h1>Enter Your Platform Usernames</h1>
+    <div className="score-wrapper">
 
-      <div className="input-section">
+      <h1 className="heading">Platform IDs</h1>
+
+      {!editMode && (
+        <button className="edit-btn" onClick={() => setEditMode(true)}>
+          Edit
+        </button>
+      )}
+
+      <div className="id-card-box">
         {Object.keys(handles).map(platform => (
-          <input
-            key={platform}
-            type="text"
-            placeholder={`${platform} username`}
-            value={handles[platform]}
-            onChange={e => setHandles({ ...handles, [platform]: e.target.value })}
-          />
+          <div className="mini-card" key={platform}>
+            <img src={icons[platform]} className="platform-icon" />
+
+            <div>
+              <div className="id-value">
+                {handles[platform] || "Not set"}
+              </div>
+            </div>
+          </div>
         ))}
       </div>
 
-      <h2>Competitive Programming Platforms</h2>
-      <div className="card-grid">
-        {["leetcode","codeforces","codechef","atcoder"]
-          .filter(p => handles[p])
-          .map(p => renderCard(p))}
-      </div>
+      {/* EDIT MODAL */}
+      {editMode && (
+        <div className="overlay">
+          <div className="edit-modal">
+            <h2>Edit IDs</h2>
 
-      <h2>Development Platforms</h2>
-      <div className="card-grid">
-        {["github"]
-          .filter(p => handles[p])
-          .map(p => renderCard(p))}
-      </div>
+            {Object.keys(handles).map(platform => (
+              <div key={platform} className="edit-row">
+                <img src={icons[platform]} className="edit-icon" />
+                <input
+                  type="text"
+                  placeholder={`${platform} username`}
+                  value={handles[platform]}
+                  onChange={e =>
+                    setHandles({ ...handles, [platform]: e.target.value })
+                  }
+                />
+              </div>
+            ))}
+
+            <button className="save-modal-btn" onClick={saveHandles}>
+              Save
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
-};
-
-export default Scorecards;
+}

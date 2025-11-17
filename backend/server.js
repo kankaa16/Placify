@@ -16,6 +16,9 @@ import applicationRoutes from "./routes/applicationroute.js";
 import messageRoutes from './routes/messageroute.js'
 import notificationRoutes from './routes/notificationroutes.js';
 import placementRoute from './routes/placementsstatsroute.js'
+import mockInterviewRoutes from './routes/mockinterviewroutes.js';
+import speechRoutes from './routes/speechroute.js';
+import {initSpeechModel} from './controllers/speechController.js';
 
 const app = express();
 
@@ -34,6 +37,8 @@ app.use(express.json());
 app.use("/api/auth", authroute);
 app.use("/api/resume", resumeRoutes);
 app.use("/api/score", scoreroute);
+app.use('/api/mock-interview', mockInterviewRoutes);
+app.use('/api/speech', speechRoutes);
 
 
 // Fetch user profile
@@ -187,7 +192,7 @@ app.get("/api/codeforces/:username", async (req, res) => {
 });
 
 
-// CodeChef
+// codechef
 app.get("/api/codechef/:username", async (req,res)=>{
   const { username } = req.params;
   try{
@@ -204,7 +209,7 @@ app.get("/api/codechef/:username", async (req,res)=>{
   }
 });
 
-// HackerRank
+// hackerrank
 app.get("/api/hackerrank/:username", async (req,res)=>{
   const { username } = req.params;
   try{
@@ -220,28 +225,35 @@ app.get("/api/hackerrank/:username", async (req,res)=>{
   }
 });
 
-// AtCoder
-app.get("/api/atcoder/:username", async (req,res)=>{
+// atcoder
+app.get("/api/atcoder/:username", async (req, res) => {
   const { username } = req.params;
-  try{
+
+  try {
     const { data } = await axios.get(`https://atcoder.jp/users/${username}`);
     const $ = cheerio.load(data);
-    const rating = $("table.dl-table tr")
-                    .filter((i,el)=> $(el).find("th").text().includes("Rating"))
-                    .find("td").text().trim() || "0";
+
+    const ratingCell = $("table.dl-table tr")
+      .filter((i, el) => $(el).find("th").text().includes("Rating"))
+      .find("td");
+
+    const ratingText = ratingCell.text().trim();
+
+    const rating = Number(ratingText.match(/\d+/)?.[0] || 0);
+
     res.json({ rating });
-  } catch(err){
+  } catch (err) {
     console.error("AtCoder fetch failed:", err.message);
-    res.json({ rating:0 });
+    res.json({ rating: 0 });
   }
 });
 
-// GitHub
 
+// github
 app.get("/api/github/:username", async (req, res) => {
   const { username } = req.params;
   try {
-    // Fetch GitHub profile info
+    // Fetch git profile info
     const { data: profileData } = await axios.get(`https://api.github.com/users/${username}`, {
       headers: process.env.GITHUB_TOKEN
         ? { Authorization: `token ${process.env.GITHUB_TOKEN}` }
@@ -334,6 +346,12 @@ app.get("/api/leetcode/:username", async (req, res) => {
             streak
           }
         }
+        userContestRanking(username: $username) {
+          rating
+          globalRanking
+          totalParticipants
+          topPercentage
+        }
       }
     `,
     variables: { username }
@@ -352,17 +370,21 @@ app.get("/api/leetcode/:username", async (req, res) => {
       }
     );
 
-    const matchedUser = data?.data?.matchedUser;
-    if (!matchedUser) return res.status(404).json({ error: "LeetCode user not found" });
+    const u = data?.data?.matchedUser;
+    const contest = data?.data?.userContestRanking;
 
-    const acStats = matchedUser.submitStats?.acSubmissionNum || [];
-    const easySolved = acStats.find(d => d.difficulty === "Easy")?.count || 0;
-    const mediumSolved = acStats.find(d => d.difficulty === "Medium")?.count || 0;
-    const hardSolved = acStats.find(d => d.difficulty === "Hard")?.count || 0;
+    if (!u) return res.status(404).json({ error: "User not found" });
+
+    const acStats = u.submitStats?.acSubmissionNum || [];
+
+    const easySolved = acStats.find(x => x.difficulty === "Easy")?.count || 0;
+    const mediumSolved = acStats.find(x => x.difficulty === "Medium")?.count || 0;
+    const hardSolved = acStats.find(x => x.difficulty === "Hard")?.count || 0;
+
     const totalSolved = easySolved + mediumSolved + hardSolved;
 
-    const calendarData = matchedUser.userCalendar?.submissionCalendar
-      ? JSON.parse(matchedUser.userCalendar.submissionCalendar)
+    const calendarData = u.userCalendar?.submissionCalendar
+      ? JSON.parse(u.userCalendar.submissionCalendar)
       : {};
 
     res.json({
@@ -370,15 +392,18 @@ app.get("/api/leetcode/:username", async (req, res) => {
       mediumSolved,
       hardSolved,
       totalSolved,
-      totalActiveDays: matchedUser.userCalendar?.totalActiveDays || 0,
-      streak: matchedUser.userCalendar?.streak || 0,
+      contestRating: contest?.rating || 0,
+      totalActiveDays: u.userCalendar?.totalActiveDays || 0,
+      streak: u.userCalendar?.streak || 0,
       submissionCalendar: calendarData
     });
+
   } catch (err) {
-    console.error("LeetCode fetch failed:", err.response?.data || err.message);
-    res.status(500).json({ error: "Failed to fetch LeetCode stats" });
+    console.error("LC error", err.response?.data || err.message);
+    res.status(500).json({ error: "Failed to fetch LC stats" });
   }
 });
+
 
 
 app.use("/api/companies", companyRoutes);
@@ -389,4 +414,8 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/placements", placementRoute);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+  // Load the AI models now that the server is running
+  initSpeechModel(); 
+});

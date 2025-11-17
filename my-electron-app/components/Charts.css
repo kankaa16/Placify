@@ -40,3 +40,15 @@
   margin-right: 6px;
   border-radius: 3px;
 }
+.one-chart {
+  display: flex;
+  justify-content: center;
+}
+
+.active-days {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #00ffaa;
+}
+

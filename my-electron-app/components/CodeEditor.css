@@ -1,0 +1,61 @@
+.code-editor-container {
+  display: flex;
+  flex-grow: 1; /* Make it fill the transcript-box */
+  background-color: #2a2a3e; /* Dark background for the editor */
+  border-radius: 0.5rem;
+  border: 1px solid #374151;
+  overflow: hidden;
+  font-family: 'Courier New', Courier, monospace; /* Monospaced font for code */
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Add a focus ring when the container or its children are focused */
+.code-editor-container:focus-within {
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.line-numbers {
+  width: 40px; /* Fixed width for line numbers */
+  padding: 0.75rem 0.5rem;
+  padding-right: 0.5rem;
+  text-align: right;
+  background-color: #1F2937; /* Darker gutter background */
+  color: #6B7280; /* Dimmed line numbers */
+  border: none;
+  resize: none;
+  overflow: hidden; /* Hide scrollbar for line numbers */
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  box-sizing: border-box;
+  -webkit-user-select: none; /* Prevent selecting line numbers */
+  user-select: none;
+}
+
+.code-input {
+  flex-grow: 1;
+  padding: 0.75rem;
+  background-color: transparent;
+  color: #E5E7EB; /* Light text for code */
+  border: none;
+  resize: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+  box-sizing: border-box;
+  caret-color: #3B82F6; /* Visible cursor */
+}
+
+/* Ensure textareas don't have an outline on focus */
+.code-input:focus,
+.line-numbers:focus {
+  outline: none;
+}
+
+.code-input::placeholder {
+  color: #6B7280;
+  font-style: italic;
+  font-family: 'Roboto', sans-serif; /* Use normal font for placeholder */
+}

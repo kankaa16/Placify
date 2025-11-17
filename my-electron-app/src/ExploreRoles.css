@@ -1,0 +1,134 @@
+.explore-container {
+  padding: 40px;
+  color: white;
+  max-width: 1400px;
+  margin: auto;
+}
+
+.title {
+  font-size: 34px;
+  font-weight: 700;
+}
+
+.subtitle {
+  font-size: 16px;
+  opacity: 0.8;
+  margin-bottom: 30px;
+}
+
+.roles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(440px, 1fr));
+  gap: 30px;
+}
+
+.role-card {
+  background: #111827;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.25);
+}
+
+.role-cover {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+}
+
+.role-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.role-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 18px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.85));
+}
+
+.role-overlay h2 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.role-overlay h3 {
+  margin-top: 4px;
+  font-size: 17px;
+  opacity: 0.9;
+}
+
+.loc {
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.85;
+  font-size: 14px;
+}
+
+/* ---------------- BODY IMPROVED SPACING ---------------- */
+
+.role-body {
+  padding: 20px;
+  color: #f3f4f6;
+}
+
+.role-body p {
+  margin: 10px 0;        /* gives breathing space */
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+.role-body strong {
+  color: #93c5fd;         /* soft blue highlight */
+}
+
+/* last date styling */
+.last-date {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  color: #fca5a5;
+  font-weight: 500;
+}
+
+/* apply button */
+.apply-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 16px;
+  background: #2563eb;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 15px;
+  transition: 0.2s;
+}
+
+.apply-btn:hover {
+  background: #1d4ed8;
+}
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  border: 1px solid #444;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.back-btn:hover {
+  background: rgba(255,255,255,0.08);
+}

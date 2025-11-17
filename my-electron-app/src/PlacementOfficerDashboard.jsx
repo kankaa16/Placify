@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import { motion } from 'framer-motion';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from '../contexts/AuthContext.jsx';
@@ -26,19 +26,74 @@ const PlacementOfficerDashboard = () => {
   const dashboardCards = [
     { id: 'students', title: 'Student Management', description: 'View and manage student profiles and readiness', icon: Users, colorClass: 'card-blue', coming: false },
     { id: 'managecompanies', title: 'Company Data', description: 'Manage company placement statistics', icon: Building2, colorClass: 'card-green', coming: false },
-    { id: 'analytics', title: 'Placement Analytics', description: 'View comprehensive placement insights', icon: TrendingUp, colorClass: 'card-purple', coming: false },
-    { id: 'reports', title: 'Generate Reports', description: 'Create placement reports and statistics', icon: FileText, colorClass: 'card-yellow', coming: true },
+    // { id: 'analytics', title: 'Placement Analytics', description: 'View comprehensive placement insights', icon: TrendingUp, colorClass: 'card-purple', coming: false },
+
     { id: 'offers', title: 'Approved Offers', description: 'View all verified offers and placement records', icon: FileText, colorClass: 'card-green', coming: false },
     {id:'verify', title:'Verify Offer Letters', description: 'Verify and approve offer letters for maintaining placement stats up-to-date', icon:FileText, colorClass:'card-blue', coming:false},
 
   ];
 
+  const [placementStats, setPlacementStats] = useState({
+  placedCount: 0,
+  avgPackage: 0,
+  highestPackage: 0
+});
+
+useEffect(() => {
+  fetchPlacementStats();
+}, []);
+
+const fetchPlacementStats = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch("http://localhost:5000/api/placements/stats/placements", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+
+    setPlacementStats({
+      placedCount: data.placedCount,
+      avgPackage: data.avgPackage,
+      highestPackage: data.highestPackage
+    });
+  } catch (e) {
+    console.log("Could not fetch placement stats");
+  }
+};
+
+const [stats, setStats] = useState({
+  totalStudents: 0
+});
+
+useEffect(() => {
+  fetchStudentCount();
+}, []);
+
+const fetchStudentCount = async () => {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch("http://localhost:5000/api/placements/count/students", {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+
+    const data = await res.json();
+
+    setStats({ totalStudents: data.count });
+  } catch (err) {
+    console.log("error while fetching student count");
+  }
+};
+
+
   const quickStats = [
-    { label: 'Total Students', value: '245', colorClass: 'value-blue' },
-    { label: 'Placed Students', value: '156', colorClass: 'value-green' },
-    { label: 'Active Companies', value: '42', colorClass: 'value-purple' },
-    { label: 'Avg Package', value: '₹8.5L', colorClass: 'value-yellow' }
-  ];
+  { label: "Total Students", value: stats.totalStudents, colorClass: "value-blue" },
+  { label: "Placed Students", value: placementStats.placedCount, colorClass: "value-green" },
+  { label: "Avg Package", value: `₹${placementStats.avgPackage}L`, colorClass: "value-yellow" }
+];
+
 
   const handleCardClick = (id) => {
     if (id === 'managecompanies') navigate('/manage-companies');
@@ -105,28 +160,16 @@ const PlacementOfficerDashboard = () => {
         </motion.div>
 
         <div className="quick-actions">
-          <div className="cards-grid">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="card card-blue"
-              onClick={() => navigate("/add-company")}
-            >
-              <PlusCircle className="icon-box" />
-              <span>Add Company</span>
-            </motion.button>
-
-            {/* <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="card card-green">
-              <Search className="icon-box" />
-              <span>Search Students</span>
-            </motion.button> */}
-
-            <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="card card-yellow">
-              <FileText className="icon-box" />
-              <span>Generate Report</span>
-            </motion.button>
-          </div>
-        </div>
+  <motion.button
+    whileHover={{ scale: 1.02 }}
+    whileTap={{ scale: 0.98 }}
+    className="add-company-btn"
+    onClick={() => navigate("/add-company")}
+  >
+    <PlusCircle className="plus-icon" />
+    <span>Add Company</span>
+  </motion.button>
+</div>
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }} className="cards-grid">
           {dashboardCards.map((card) => {

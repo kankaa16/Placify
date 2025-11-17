@@ -22,7 +22,10 @@ import AdminStudentList from './AdminStudentList.jsx';
 import StudentProfile from './StudentProfile.jsx';
 import ApprovedOffers from './ApprovedOffers.jsx';
 import AdminOfferVerification from './AdminOfferVerification.jsx';
-
+import AIInterviewLanding from '../components/AIInterviewLanding.jsx';
+import AIMockInterviewSession from "../components/AIInterviewSession.jsx";
+import InterviewScore from '../components/InterviewScore.jsx';
+import ExploreRoles from './ExploreRoles.jsx';
 const ScorecardsWrapper = () => {
   const { user } = useAuth();
   return <div className="scorecards-wrapper"><Scorecards userId={user?._id} /></div>;
@@ -113,6 +116,33 @@ function AppContent() {
   }
 />
 
+<Route
+  path="/ai-interview"
+  element={
+    <ProtectedRoute allowedRoles={['student']}>
+      <AIInterviewLanding />
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/ai-interview/session/:sessionId"
+  element={
+    <ProtectedRoute allowedRoles={['student']}>
+      <AIMockInterviewSession />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/ai-interview/score"
+  element={
+    <ProtectedRoute allowedRoles={['student']}>
+      <InterviewScore />
+    </ProtectedRoute>
+  }
+/>
+
+<Route path="/explore-roles" element={<ExploreRoles />} />
 
 
 

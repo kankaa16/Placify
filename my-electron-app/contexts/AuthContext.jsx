@@ -109,7 +109,7 @@ useEffect(() => {
       dispatch({ type: AUTH_ACTIONS.LOGIN_START });
       const response = await axios.post("/auth/login", credentials);
       const { user: rawUser, token } = response.data?.data || {};
-      const user = normalizeUser(rawUser);
+      const user = normalizeUser(rawUser);localStorage.setItem("userId", user.id);
 
       if (!token) throw new Error("No token returned from server");
 
@@ -133,6 +133,8 @@ useEffect(() => {
       const response = await axios.post("/auth/register", userData);
       const { user: rawUser, token } = response.data?.data || {};
       const user = normalizeUser(rawUser);
+
+      localStorage.setItem("userId", user.id);
 
       if (!token) throw new Error("No token returned from server");
 

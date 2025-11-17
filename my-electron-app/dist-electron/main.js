@@ -1,5 +1,5 @@
 "use strict";
-const { app, BrowserWindow, shell } = require("electron");
+const { app, BrowserWindow, shell, session } = require("electron");
 const path = require("path");
 function createWindow() {
   const win = new BrowserWindow({
@@ -7,10 +7,21 @@ function createWindow() {
     height: 800,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      contextIsolation: true,
+      contextIsolation: false,
       sandbox: false,
-      nodeIntegration: false
+      media: true,
+      nodeIntegration: false,
+      webSecurity: false,
+      allowRunningInsecureContent: true,
+      experimentalFeatures: true,
+      enableBlinkFeatures: "MediaStream"
     }
+  });
+  session.defaultSession.setPermissionRequestHandler((webContents, permission, callback) => {
+    if (permission === "media" || permission === "camera" || permission === "microphone") {
+      return callback(true);
+    }
+    callback(false);
   });
   win.webContents.setWindowOpenHandler(({ url }) => {
     shell.openExternal(url);

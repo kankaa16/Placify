@@ -77,10 +77,38 @@ const StudentDashboard = () => {
       icon: MessageSquare,
       colorClass: 'card-red',
       iconClass: 'icon-red',
-      coming: true,
-      route: null
+      coming: false,
+      route: '/ai-interview' 
     }
+    ,
+    {
+  id: 'roles',
+  title: 'Explore Roles',
+  description: 'Browse internships and job openings',
+  icon: FileText,
+  colorClass: 'card-orange',
+  iconClass: 'icon-orange',
+  coming: false,
+  route: '/explore-roles'
+}
+
   ];
+
+
+  // calculate readiness score
+const resumeScore = user?.resumeAnalysis?.score || 0;
+
+const codingScore = user?.readinessScore || 0; // or from coding stats model
+const mcqScore = user?.assessments?.length
+  ? user.assessments.reduce((a, b) => a + (b.score || 0), 0) / user.assessments.length
+  : 0;
+
+const testScore = (0.4 * codingScore) + (0.3 * mcqScore) + (0.3 * 80); // assume 80 for contests for now
+
+const readiness = Math.round(
+  0.4 * resumeScore + 0.6 * testScore
+);
+
 
   return (
     <div className="dashboard-container">
@@ -154,8 +182,19 @@ const StudentDashboard = () => {
           className="stats-grid"
         >
           {[
-            { label: 'Readiness Score', value: '85%', cls: 'green' },
-            { label: 'Resume Score', value: '92/100', cls: 'blue' },
+            {
+  label: 'Readiness Score',
+  value: readiness ? `${readiness}%` : 'No data',
+  cls: 'green'
+},
+
+            { 
+      label: 'Resume Score', 
+      value: user?.resumeAnalysis?.score 
+              ? `${user.resumeAnalysis.score}/100` 
+              : 'Not analyzed', 
+      cls: 'blue' 
+    },
             { label: 'Certifications', value: '3', cls: 'yellow' },
             { label: 'Mock Interviews', value: '12', cls: 'purple' }
           ].map((stat, idx) => (

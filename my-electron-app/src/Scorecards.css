@@ -1,125 +1,130 @@
-/* General page styles */
-.scorecards-container {
-  background-color: #121212;
+.score-wrapper {
+  background: #0c0c0c;
   min-height: 100vh;
-  padding: 40px;
-  color: #fff;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-family: 'Inter', sans-serif;
+  padding: 20px;
+  color: #eee;
+  font-family: Inter, sans-serif;
 }
 
-/* Input section */
-.input-section {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
-  width: 100%;
-  max-width: 1000px;
-  margin-bottom: 30px;
-}
-
-.input-section input {
-  padding: 12px 15px;
-  border-radius: 12px;
-  border: none;
-  background-color: #1f1f1f;
-  color: #fff;
-  font-size: 16px;
-}
-
-.input-section input::placeholder {
-  color: #888;
-}
-
-/* Fetch button */
-.fetch-button {
-  background-color: #4f46e5;
-  color: #fff;
-  font-weight: bold;
-  padding: 12px 30px;
-  border-radius: 12px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  margin-bottom: 50px;
-}
-
-.fetch-button:hover {
-  background-color: #6366f1;
-}
-
-/* Card grid */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 30px;
-  width: 100%;
-  max-width: 1200px;
-  margin-bottom: 50px;
-}
-
-/* Individual card */
-.card {
-  background-color: #1f1f1f;
-  border-radius: 16px;
-  padding: 25px 20px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transition: transform 0.3s ease;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-}
-
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 15px;
-}
-
-.card-header img {
-  width: 40px;
-  height: 40px;
-}
-
-.card-header h2 {
-  font-size: 20px;
-  font-weight: 700;
-  color: #fff;
-}
-
-.card-body {
-  width: 100%;
+.heading {
+  text-align: center;
+  font-size: 28px;
   margin-bottom: 20px;
+  color: #fff;
 }
 
-.card-body p {
+.edit-btn {
+  position: absolute;
+  right: 25px;
+  top: 25px;
+  background: #222;
+  color: #ddd;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.edit-btn:hover {
+  background: #333;
+}
+
+.id-card-box {
+  margin-top: 30px;
   display: flex;
-  justify-content: space-between;
-  margin-bottom: 6px;
-  color: #ccc;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mini-card {
+  background: #121212;
+  padding: 14px 18px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 0 0 1px #1f1f1f;
+}
+
+.platform-icon {
+  width: 26px;
+  height: 26px;
+  opacity: 0.9;
+}
+
+.id-value {
   font-size: 15px;
+  color: #dcdcdc;
 }
 
-.chart-wrapper {
+/* EDIT MODAL */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 150px;
-}
-
-.chart-container {
-  width: 100%;
-  height: 200px; /* fixed height for chart */
-  min-width: 150px; /* ensures responsive container gets width */
-  min-height: 150px;
-}
-.github-heatmap-wrapper {
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin: 20px 0;
+}
+
+.edit-modal {
+  width: 90%;
+  max-width: 380px;
+  background: #111;
+  padding: 20px;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(20, 20, 20, 0.4);
+}
+
+.edit-modal h2 {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 16px;
+}
+
+.edit-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #1b1b1b;
+  padding: 10px 12px;
+  border-radius: 10px;
+  margin-bottom: 12px;
+}
+
+.edit-icon {
+  width: 22px;
+  opacity: 0.8;
+}
+
+.edit-row input {
+  background: transparent;
+  border: none;
+  flex: 1;
+  color: #fff;
+  font-size: 15px;
+  outline: none;
+}
+
+.save-modal-btn {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  background: #4a7df2;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+}
+.save-modal-btn:hover {
+  background: #3d68d4;
+}
+.platform-icon,
+.edit-icon {
+  filter: invert(1);
 }

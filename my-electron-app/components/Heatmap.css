@@ -14,3 +14,9 @@
   font-weight: 500;
   margin-bottom: 12px;
 }
+
+.react-calendar-heatmap {
+  transform: scale(1.1);
+  margin: 10px 0;
+}
+

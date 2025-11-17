@@ -1,0 +1,102 @@
+/* Full dark page */
+.rr-page {
+  width: 100%;
+  min-height: 100vh;
+  background: #0f0f16;
+  padding: 30px;
+  color: #e6e6e6;
+  font-family: Inter, sans-serif;
+}
+
+/* Top: left and right sections */
+.rr-top {
+  display: flex;
+  gap: 30px;
+  margin-bottom: 30px;
+}
+
+/* Left: ATS + Chart stacked vertically */
+.rr-left-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Right: Missing keywords + Final thoughts stacked vertically */
+.rr-right-box {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+/* Shared card styling */
+.rr-card {
+  background: #1a1a25;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: 0 0 18px rgba(0,0,0,0.4);
+  transition: 200ms ease;
+}
+
+.rr-card:hover {
+  border-color: rgba(255,255,255,0.25);
+}
+
+/* card titles */
+.rr-card h3 {
+  margin: 0 0 12px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* keywords badges */
+.rr-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.rr-badge {
+  background: #6e6cf2;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* final thoughts */
+.rr-text {
+  line-height: 1.6;
+  color: #cfcfcf;
+}
+
+/* bottom full width section */
+.rr-bottom {
+  margin-top: 20px;
+}
+
+/* raw preformatted text */
+.rr-raw {
+  white-space: pre-wrap;
+  font-size: 14px;
+  color: #bfbfbf;
+  margin-top: 10px;
+  line-height: 1.5;
+}
+
+/* responsive */
+@media (max-width: 900px) {
+  .rr-top {
+    flex-direction: column;
+  }
+
+  .rr-left-box, 
+  .rr-right-box {
+    width: 100%;
+  }
+}
